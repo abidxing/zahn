@@ -12,6 +12,7 @@ import {
   type ServiceCategoryId,
   type ServiceItemConfig,
 } from "@/data/serviceMenu";
+import { getServiceNavLabel } from "@/lib/serviceNavLabel";
 
 function ServiceMenuItemLink({
   item,
@@ -114,7 +115,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
     pathname.startsWith("/vorher-nachher") || pathname.startsWith("/en/before-after");
 
   return (
-    <header className="sticky top-0 z-50 w-full min-w-0 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 w-full min-w-0 overflow-visible bg-white shadow-sm">
       <nav
         className="mx-auto grid w-full min-w-0 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 gap-y-1 px-4 py-3 sm:px-6 lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:gap-x-3 lg:px-6 xl:gap-x-5 xl:px-8"
         aria-label={dict.nav.ariaNav}
@@ -147,7 +148,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
         </Link>
 
         {/* CENTER: Navigation */}
-        <div className="hidden min-w-0 justify-center justify-self-center lg:flex lg:items-center lg:gap-x-2 xl:gap-x-4 2xl:gap-x-6 lg:px-1">
+        <div className="hidden min-w-0 justify-center justify-self-center overflow-visible lg:flex lg:items-center lg:gap-x-2 xl:gap-x-4 2xl:gap-x-6 lg:px-1">
           <Link
             href={homeHref}
             className={`${navLinkClass} ${pathname === "/" || pathname === "/en" ? navLinkActiveClass : ""}`}
@@ -176,10 +177,10 @@ export default function Navbar({ locale, dict }: NavbarProps) {
               </svg>
             </Link>
             {leistungenOpen && (
-              <div className="absolute left-0 top-full pt-3">
-                <div className="flex min-w-[520px] rounded-2xl border border-gray-200 bg-white/95 py-4 shadow-xl backdrop-blur-sm">
+              <div className="absolute left-1/2 top-full z-[60] -translate-x-1/2 pt-3">
+                <div className="flex w-[min(calc(100vw-1.5rem),44rem)] min-w-0 max-w-[44rem] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl sm:min-w-[34rem] sm:flex-row sm:items-stretch">
                   {/* Left column: service categories */}
-                  <div className="w-56 border-r border-gray-100 px-3">
+                  <div className="w-full shrink-0 border-b border-gray-100 px-3 py-3 sm:w-56 sm:border-b-0 sm:border-r">
                     <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
                       {dict.nav.services}
                     </p>
@@ -247,26 +248,28 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                   </div>
 
                   {/* Right column: links for active category */}
-                  <div className="w-[360px] px-4">
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                  <div className="flex min-h-0 min-w-0 flex-1 flex-col px-4 py-3">
+                    <p className="mb-2 shrink-0 text-xs font-semibold uppercase tracking-wide text-gray-400">
                       {getCategoryLabel(activeServiceCategory)}
                     </p>
-                    <div className="grid gap-1">
-                      {SERVICE_CATEGORIES.find((c) => c.id === activeServiceCategory)?.items.map((item) => (
-                        <ServiceMenuItemLink
-                          key={item.dePath}
-                          item={item}
-                          locale={locale}
-                          className="flex items-center rounded-lg px-3 py-2 text-sm text-[#1e293b] hover:bg-gray-50 hover:text-[#0f2e5c] transition-colors"
-                          onClick={() => setLeistungenOpen(false)}
-                        >
-                          <span className="truncate">
-                            {(dict.routeTitles as Record<string, string>)[item.dePath] ?? item.dePath}
-                          </span>
-                        </ServiceMenuItemLink>
-                      ))}
+                    <div className="min-h-0 max-h-[min(58vh,20rem)] overflow-y-auto overscroll-contain pr-1">
+                      <div className="grid gap-0.5">
+                        {SERVICE_CATEGORIES.find((c) => c.id === activeServiceCategory)?.items.map((item) => (
+                          <ServiceMenuItemLink
+                            key={item.dePath}
+                            item={item}
+                            locale={locale}
+                            className="flex min-w-0 items-start rounded-lg px-3 py-2 text-sm leading-snug text-[#1e293b] hover:bg-gray-50 hover:text-[#0f2e5c] transition-colors"
+                            onClick={() => setLeistungenOpen(false)}
+                          >
+                            <span className="min-w-0 break-words text-pretty">
+                              {getServiceNavLabel(item.dePath, dict)}
+                            </span>
+                          </ServiceMenuItemLink>
+                        ))}
+                      </div>
                     </div>
-                    <div className="mt-3 flex gap-2 text-xs text-gray-500">
+                    <div className="mt-3 flex shrink-0 flex-wrap gap-x-2 gap-y-1 border-t border-gray-100 pt-3 text-xs text-gray-500">
                       <Link
                         href={getHref("/kieferorthopaedie", locale)}
                         className="hover:text-[#0f2e5c] hover:underline"
@@ -478,10 +481,10 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                                 key={item.dePath}
                                 item={item}
                                 locale={locale}
-                                className="block rounded-lg px-3 py-1.5 text-sm text-[#1e293b]/80 hover:bg-[#f8f9fb] hover:text-[#0f2e5c]"
+                                className="block rounded-lg px-3 py-1.5 text-sm leading-snug text-[#1e293b]/80 break-words hover:bg-[#f8f9fb] hover:text-[#0f2e5c]"
                                 onClick={() => setMobileOpen(false)}
                               >
-                                {(dict.routeTitles as Record<string, string>)[item.dePath] ?? item.dePath}
+                                {getServiceNavLabel(item.dePath, dict)}
                               </ServiceMenuItemLink>
                             ))}
                           </div>

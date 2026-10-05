@@ -1,14 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import type { Locale } from "@/lib/i18n";
 import type { Dictionary } from "@/lib/dictionaries";
 import PageContent from "./PageContent";
+import JsonLd from "./JsonLd";
 import { getHref } from "@/lib/paths";
-import { BOOKING_URL } from "@/lib/site";
+import { BOOKING_URL, SITE_URL } from "@/lib/site";
+import { DOCTOR, PRACTICE } from "@/lib/practiceInfo";
 
 const BASE = "/asethetic-dental-services";
 
-/** Local assets — each file used at least once (see sections below). */
 const IMG = {
   smile: `${BASE}/Aesthetik.jpg`,
   bridgeWide: `${BASE}/dental-ga63c0bf75_1920-1536x864.png`,
@@ -24,6 +26,20 @@ const IMG = {
   bleaching: `${BASE}/Zahnbleichen.png`,
   hygiene: `${BASE}/zahnhygiene.png`,
 } as const;
+
+function FaqItem({ question, answer }: { question: string; answer: ReactNode }) {
+  return (
+    <details className="group rounded-2xl border border-gray-100 bg-white shadow-soft open:shadow-soft-lg">
+      <summary className="cursor-pointer list-none px-5 py-4 font-semibold text-primary transition-colors hover:bg-primary/[0.04] [&::-webkit-details-marker]:hidden">
+        <span className="flex items-start justify-between gap-3">
+          <span>{question}</span>
+          <span className="mt-0.5 shrink-0 text-primary-muted transition-transform group-open:rotate-180">▾</span>
+        </span>
+      </summary>
+      <div className="border-t border-gray-100 px-5 pb-5 pt-3 text-sm leading-relaxed text-slate-700">{answer}</div>
+    </details>
+  );
+}
 
 function ServiceCard({
   href,
@@ -57,6 +73,9 @@ function ServiceCard({
   );
 }
 
+const DE_LEAD =
+  "Ästhetische zahnärztliche Leistungen in Wien umfassen Behandlungen, die Aussehen und Funktion der Zähne berücksichtigen – etwa Zahnstellung, Zahnfarbe oder Zahndefekte. Bei Zahnspange Sablania in 1200 Wien gehören dazu unter anderem unsichtbare Zahnspangen und transparente Aligner, Zahnbleaching, ästhetische Füllungen, professionelle Mundhygiene sowie Kronen und Brücken. Dr. Manish Sablania ist Fachzahnarzt für Kieferorthopädie und Allgemeinzahnarzt. Ob eine Behandlung geeignet ist, hängt vom individuellen Befund ab; eine Website ersetzt keine Untersuchung. Kieferorthopädie kann Teil der Zahnästhetik sein, ersetzt aber keine restaurative Versorgung wie Füllungen oder Kronen. Für kieferorthopädische Fragen gibt es eine kostenlose Erstberatung. Der nächste Schritt ist ein Termin in der Ordination.";
+
 export default function AestheticDentalServicesContent({
   locale,
   dict,
@@ -67,72 +86,261 @@ export default function AestheticDentalServicesContent({
   const dePath = "/asethetic-dental-services";
   const titles = dict.routeTitles as Record<string, string>;
   const leads = dict.pageLeads as Record<string, string>;
-  const title = titles[dePath] ?? "Ästhetische Zahnärztliche Leistungen";
-  const lead = leads[dePath];
   const isDe = locale === "de";
+  const title = isDe ? "Ästhetische zahnärztliche Leistungen in Wien" : (titles[dePath] ?? "Aesthetic Dental Services");
+  const lead = isDe ? DE_LEAD : leads[dePath];
+  const u = (path: string) => getHref(path, locale);
+
+  const unsichtbarHref = u("/unsichtbare-zahnspange-wien");
+  const durchsichtigHref = u("/durchsichtige-zahnspange");
+  const lingualHref = u("/unsichtbare-zahnspange-lingual-innenliegende-zahnspange");
+  const kfoHref = u("/kieferorthopaedie");
+  const erwachseneHref = u("/zahnspange-fuer-erwachsene");
+  const mundhygieneHref = u("/mundhygiene-wien");
+  const bleachingHref = u("/zahnbleaching");
+  const fuellungHref = u("/komposit-zahnfuellung");
+  const kroneHref = u("/krone-bruecke");
+  const kontaktHref = u("/kontakt");
+  const terminHref = u("/online-termine");
+
+  const base = SITE_URL.replace(/\/$/, "");
+  const pageUrl = `${base}${dePath}`;
+  const dentistId = `${base}/#dentist`;
+  const websiteId = `${base}/#website`;
+  const doctorId = `${base}/#doctor`;
 
   const h = {
     tagline: isDe
-      ? "Schönheit und Funktion vereint – Ästhetische Zahnmedizin für ein strahlendes Lächeln"
+      ? "Zahnästhetik in Wien: Stellung, Farbe und Form – nach individuellem Befund"
       : "Beauty and function combined – aesthetic dentistry for a radiant smile",
     intro1: isDe
-      ? "In meiner Zahnarzt-Kieferorthopädie-Praxis im 20. Bezirk biete ich auch ästhetische Zahnmedizin an. Dabei lege ich großen Wert darauf, Ihnen ein strahlendes und ästhetisch ansprechendes Lächeln zu ermöglichen, das Ihre individuelle Schönheit unterstreicht. Sie profitieren von langjährigem Fachwissen kombiniert mit modernsten Technologien für die besten ästhetischen Zahnlösungen. So lasse ich Ihre Zähne in neuem Glanz erstrahlen und gleichzeitig wird die Funktion und Gesundheit erhalten."
+      ? "In der Ordination Zahnspange Sablania in 1200 Wien verbinden wir ästhetische Zahnmedizin mit Kieferorthopädie. Ziel ist es, Aussehen und Funktion der Zähne zu berücksichtigen – ohne pauschale Ergebnisversprechen. Welche Behandlung in Frage kommt, klären wir in der Untersuchung."
       : "At our dental and orthodontic practice in Vienna’s 20th district we offer aesthetic dentistry with a focus on a radiant, natural-looking smile. You benefit from many years of expertise combined with modern technology for high-quality aesthetic solutions—restoring shine while preserving function and health.",
     intro2: isDe
-      ? "Mit meinem umfangreichen Leistungsangebot in der ästhetischen Zahnmedizin kann ich auf Ihre spezifischen Bedürfnisse und Wünsche eingehen und individuelle Lösungen entwickeln. Ich weiß, dass jeder Patient einzigartig ist, und deshalb lege ich großen Wert darauf, Ihre persönlichen Vorstellungen zu berücksichtigen und gemeinsam mit Ihnen ein Behandlungskonzept zu entwickeln, das perfekt auf Sie zugeschnitten ist."
+      ? "Ästhetische Zahnheilkunde meint hier kein festes Paket, sondern ausgewählte Leistungen: unsichtbare Zahnspange und transparente Aligner, Bleaching, zahnfarbene Füllungen, Mundhygiene sowie Kronen und Brücken. Jede Planung erfolgt individuell."
       : "Our wide range of aesthetic services allows tailored solutions for your goals. Every patient is unique—we take your wishes seriously and plan treatment together with you.",
     intro3: isDe
-      ? "Ich stehe für Qualität, Patientenorientierung und fortschrittliche Technologien. Mein Ziel ist es, Ihnen ein strahlendes Lächeln zu schenken, das Ihr Selbstbewusstsein stärkt und Ihre natürliche Schönheit zum Ausdruck bringt."
+      ? "Wir beraten Sie zu den Leistungen, die in dieser Ordination angeboten werden. Ob eine Behandlung geeignet ist, hängt vom Befund, Ihren Zielen und der medizinischen Situation ab."
       : "We stand for quality, patient focus and advanced technology—helping you smile with confidence.",
     heart: isDe ? "Zahnmedizin mit ❤" : "Dentistry with heart",
     servicesH: isDe
-      ? "Allgemeine und ästhetische Leistungen der Kieferorthopädie Wien"
+      ? "Welche ästhetischen Zahnbehandlungen bieten wir an?"
       : "General and aesthetic services in orthodontics, Vienna",
+    defineH: "Was sind ästhetische zahnärztliche Leistungen?",
+    defineP:
+      "Ästhetische zahnärztliche Leistungen – oft auch ästhetische Zahnmedizin oder Zahnästhetik genannt – zielen darauf, das Erscheinungsbild der Zähne zu verbessern und dabei die Funktion zu berücksichtigen. Das kann die Zahnstellung, die Zahnfarbe oder die Versorgung von Defekten betreffen. Welche Maßnahme sinnvoll ist, entscheidet die Untersuchung – nicht diese Website.",
+    matchH: "Welche Behandlung passt zu welchem Anliegen?",
+    matchLead:
+      "Die folgenden Zuordnungen dienen der Orientierung. Eine Empfehlung erfolgt erst nach Befund:",
+    matchItems: [
+      "Zahnstellung: unsichtbare Zahnspange, transparente Aligner, Keramikbrackets oder Lingualtechnik",
+      "Zahnfarbe: Zahnbleaching / Zahnaufhellung",
+      "Zahndefekte: ästhetische Komposit- oder Keramikfüllungen",
+      "Fehlende Zähne: Kronen und Brücken",
+      "Beläge und Zahnstein: professionelle Mundhygiene",
+    ],
     orthoH: isDe
-      ? "Die unsichtbare Zahnspange für selbstbewusstes Lächeln"
+      ? "Ästhetische Zahnmedizin und Kieferorthopädie"
       : "Invisible braces for a confident smile",
     orthoBody: isDe
-      ? "Die Möglichkeit, Zahnspangen bei Zahnfehlstellungen zu nutzen, ist heute eines der effizientesten Mittel zur Lösung kieferorthopädischer Probleme. Zahnspangen für Kinder, Jugendliche oder Erwachsene sind mein langjähriges Spezialgebiet. Meine Erfahrung von über 28 Jahren aus mehr als 7.800 Zahnspangen-Behandlungen ist ein Mehrwert, den ich Ihnen ans Herz legen möchte. Mit Herz, Leidenschaft und fundiertem Wissen widme ich mich in meiner Kieferorthopädie-Ordination der Lösung kieferorthopädischer Probleme. Dieser Grundsatz bildet das Fundament meiner Arbeit und treibt mich jeden Tag an, meinen Patientinnen und Patienten die bestmögliche Behandlung zu bieten. Das Wohl meiner Patienten steht immer im Mittelpunkt meiner Tätigkeit. Ich setze alles daran, individuelle Bedürfnisse zu verstehen und eine maßgeschneiderte Behandlung anzubieten. Dabei arbeite ich eng mit Ihnen zusammen, höre zu und beantworte Ihre Fragen, damit Sie sich während des gesamten Behandlungsprozesses gut aufgehoben fühlen."
-      : "Braces remain one of the most effective ways to treat malocclusion. Treating children, teens and adults has been my focus for many years—with over 28 years of experience and more than 7,800 brace treatments. Passion and sound knowledge guide every day in our practice. Your wellbeing is central: we listen, explain and support you throughout treatment.",
+      ? `${DOCTOR.experienceComboDe} Zahnfehlstellungen lassen sich kieferorthopädisch korrigieren – auch mit unauffälligen Optionen wie transparenten Alignern, Invisalign, Keramikbrackets oder einer Lingualzahnspange. Kieferorthopädie ersetzt keine Füllung, kein Bleaching und keine Krone: Sie betrifft die Stellung der Zähne.`
+      : "Braces remain one of the most effective ways to treat malocclusion. Treating children, teens and adults has been my focus for many years—with over 28 years of experience and more than 8,000 brace treatments. Passion and sound knowledge guide every day in our practice. Your wellbeing is central: we listen, explain and support you throughout treatment.",
     orthoBody2: isDe
-      ? "In meiner Kieferorthopädie-Ordination geht es nicht nur um die Lösung kieferorthopädischer Probleme, sondern auch um ein positives und freundliches Umfeld. Ich möchte, dass Sie sich vom ersten Besuch bis zum Abschluss der Behandlung wohl und willkommen fühlen."
+      ? "In der Beratung besprechen wir, ob eine kieferorthopädische Korrektur, eine restaurative Leistung oder beides in Frage kommt. Die Entscheidung hängt vom individuellen Befund ab."
       : "Beyond clinical results, we want you to feel welcome and comfortable from your first visit through completion of treatment.",
-    invisH: isDe ? "Unsichtbare Zahnspange Invisalign" : "Invisalign clear aligners",
-    invisSub1: isDe ? "Unsichtbare Zahnspange Invisalign" : "Invisalign",
+    invisH: isDe ? "Unsichtbare Zahnspange und Aligner" : "Invisalign clear aligners",
+    invisSub1: isDe ? "Unsichtbare Zahnspange / Invisalign" : "Invisalign",
     invisSub2: isDe ? "Unsichtbare Lingualzahnspange" : "Lingual braces",
-    consultH: isDe ? "Kostenlose Erstberatung" : "Free initial consultation",
+    consultH: isDe ? "Wie läuft die Beratung ab?" : "Free initial consultation",
     consultBody: isDe
-      ? "Ich biete eine umfassende Beratung an, in der wir Ihre individuellen Bedürfnisse und Wünsche besprechen und alle möglichen Behandlungsoptionen aufzeigen. Meine Leidenschaft für die Kieferorthopädie treibt mich dazu an, stets auf dem neuesten Stand der Forschung und Technologie zu bleiben. Ich halte mich kontinuierlich über die neuesten Entwicklungen in meinem Fachgebiet auf dem Laufenden und nehme regelmäßig an Fortbildungen teil. Dadurch kann ich innovative und effektive Behandlungsmethoden einsetzen und erstklassige Ergebnisse bieten."
+      ? "Für die kieferorthopädische Erstberatung bieten wir eine kostenlose Beratung an. Dabei besprechen wir Ihre Anliegen, untersuchen Zähne und Kiefer und erläutern mögliche Optionen inklusive Ablauf und geschätzter Kosten, soweit das nach der Untersuchung möglich ist."
       : "We offer thorough consultations to discuss your goals and options. Continuous training keeps us at the forefront of research and technology so we can deliver up-to-date, effective care.",
     consultBody2: isDe
-      ? "Ein vertrauensvolles Verhältnis ist mir besonders wichtig. Ich nehme mir Zeit für eine gründliche Diagnose, individuelle Behandlungspläne und alle Informationen, die Sie für eine informierte Entscheidung brauchen."
+      ? "Auch bei Bleaching, Füllungen, Mundhygiene oder Kronen und Brücken klären wir Eignung und nächste Schritte individuell. Pauschale Eignung oder ein bestimmtes Aussehen können wir nicht im Voraus zusichern."
       : "Trust matters: we take time for diagnosis, planning and clear information.",
     consultBody3: isDe
-      ? "Eine kostenlose Erstberatung gibt Ihnen die Möglichkeit, mich als Zahnarzt / Kieferorthopäden in 1200 Wien kennenzulernen, Fragen zu stellen und eine fundierte Entscheidung über Ihre kieferorthopädische Behandlung zu treffen. Im Rahmen der Erstberatung besprechen wir Ihre Wünsche und führen eine gründliche Untersuchung der Zahn- und Kieferstruktur durch. Auf dieser Basis zeige ich Behandlungsoptionen mit Vor- und Nachteilen, den voraussichtlichen Ablauf und die geschätzten Kosten auf."
+      ? "Sie lernen die Ordination in 1200 Wien kennen, können Fragen stellen und entscheiden in Ruhe. Verbindliche Angaben zu Kosten und Dauer erfolgen nach Befund."
       : "A free initial consultation lets you meet the team, ask questions, and understand options, timeline and costs before you decide.",
     consultBody4: isDe
-      ? "Mein Ziel ist es, Sie umfassend zu informieren und Ihnen zu helfen, die beste Entscheidung für Ihre Behandlung zu treffen. Kontaktieren Sie mich noch heute, um einen Termin für Ihre kostenlose kieferorthopädische Erstberatung zu vereinbaren. Ich freue mich darauf, Sie zu unterstützen und Ihnen zu einem schönen und gesunden Lächeln zu verhelfen."
+      ? "Terminvereinbarung ist online oder über die Ordination möglich."
       : "Contact us today to book your free orthodontic consultation—we look forward to helping you achieve a healthy, beautiful smile.",
-    arztH: isDe ? "Dr. med. dent. Manish Sablania M.Sc. Orthodontics" : "Dr Manish Sablania M.Sc. Orthodontics",
+    localH: "Ästhetische zahnärztliche Leistungen in Wien",
+    arztH: isDe ? `${DOCTOR.name}, M.Sc. Specialized Orthodontics` : "Dr Manish Sablania M.Sc. Orthodontics",
     arztSub: isDe
-      ? "Dr. med. dent. Manish Sablania BDS M.Sc. – Kieferorthopädie-Zahnarzt Wien 1200"
+      ? `${DOCTOR.jobTitleDe} · ${PRACTICE.streetAddress}, ${PRACTICE.postalCode} ${PRACTICE.addressLocality}`
       : "Specialist orthodontist Vienna 1200",
     arztLi1: isDe
-      ? "Qualifizierter Wahlkieferorthopäde für „Krankenkasse-Gratis Zahnspange“, spezialisiert in Kieferorthopädie und Orthodontie."
+      ? "Qualifizierter Wahlkieferorthopäde für die Krankenkasse-Gratis-Zahnspange, Fachzahnarzt für Kieferorthopädie."
       : "Qualified elective orthodontist for Austria’s publicly funded braces programme and specialist orthodontics.",
-    arztLi2: isDe
-      ? "Über 28 Jahre Erfahrung und mehr als 7.800 kieferorthopädische Behandlungen und Zahnspangenfälle – mit Fokus auf das Wohlbefinden der Patientinnen und Patienten."
-      : "More than 28 years of experience and over 7,800 orthodontic treatments and braces cases.",
+    arztLi2: isDe ? DOCTOR.experienceComboDe : DOCTOR.experienceComboEn,
     ctaAesthetic: isDe ? "Termin für ästhetische Zahnmedizin vereinbaren" : "Book an aesthetic dentistry appointment",
     ctaConsult: isDe ? "Kostenlose Erstberatung vereinbaren" : "Book a free consultation",
+    faqH: "Häufige Fragen zur ästhetischen Zahnmedizin",
   };
 
-  const u = (path: string) => getHref(path, locale);
+  const deFaqs: { q: string; aText: string; a: ReactNode }[] = [
+    {
+      q: "Was versteht man unter ästhetischer Zahnmedizin?",
+      aText:
+        "Ästhetische Zahnmedizin bzw. Zahnästhetik umfasst zahnärztliche Leistungen, die das Erscheinungsbild der Zähne berücksichtigen – etwa Stellung, Farbe oder die Versorgung von Defekten. Funktion und individuelle Befunde bleiben maßgeblich.",
+      a: "Ästhetische Zahnmedizin bzw. Zahnästhetik umfasst zahnärztliche Leistungen, die das Erscheinungsbild der Zähne berücksichtigen – etwa Stellung, Farbe oder die Versorgung von Defekten. Funktion und individuelle Befunde bleiben maßgeblich.",
+    },
+    {
+      q: "Welche ästhetischen zahnärztlichen Leistungen gibt es?",
+      aText:
+        "Zum Gebiet der ästhetischen Zahnheilkunde können unter anderem Zahnaufhellung, zahnfarbene Füllungen, kieferorthopädische Korrekturen mit Alignern oder unauffälligen Brackets sowie restaurative Versorgungen gehören. Welche Verfahren im Einzelfall infrage kommen, hängt vom Befund ab.",
+      a: "Zum Gebiet der ästhetischen Zahnheilkunde können unter anderem Zahnaufhellung, zahnfarbene Füllungen, kieferorthopädische Korrekturen mit Alignern oder unauffälligen Brackets sowie restaurative Versorgungen gehören. Welche Verfahren im Einzelfall infrage kommen, hängt vom Befund ab.",
+    },
+    {
+      q: "Welche ästhetischen Zahnbehandlungen bietet Zahnspange Sablania an?",
+      aText:
+        "In der Ordination Zahnspange Sablania in Wien gehören dazu: unsichtbare Zahnspange und transparente Aligner (einschließlich Invisalign), Lingualzahnspange, Keramikbrackets, Zahnbleaching, ästhetische Komposit- und Keramikfüllungen, professionelle Mundhygiene sowie Kronen und Brücken. Ob eine Behandlung geeignet ist, hängt vom individuellen Befund ab.",
+      a: (
+        <>
+          In der Ordination Zahnspange Sablania in Wien gehören dazu: unsichtbare Zahnspange und transparente Aligner
+          (einschließlich Invisalign), Lingualzahnspange, Keramikbrackets, Zahnbleaching, ästhetische Komposit- und
+          Keramikfüllungen, professionelle Mundhygiene sowie Kronen und Brücken. Ob eine Behandlung geeignet ist, hängt
+          vom individuellen Befund ab.
+        </>
+      ),
+    },
+    {
+      q: "Können Zahnfehlstellungen ästhetisch korrigiert werden?",
+      aText:
+        "Zahnfehlstellungen können kieferorthopädisch behandelt werden. Unauffällige Optionen können transparente Aligner, Keramikbrackets oder eine innenliegende Lingualzahnspange sein. Die geeignete Methode legt die Untersuchung fest.",
+      a: (
+        <>
+          Zahnfehlstellungen können kieferorthopädisch behandelt werden. Unauffällige Optionen können transparente
+          Aligner, Keramikbrackets oder eine innenliegende Lingualzahnspange sein. Mehr zur{" "}
+          <Link href={kfoHref} className="font-medium text-accent underline hover:text-primary">
+            Kieferorthopädie in Wien
+          </Link>
+          . Die geeignete Methode legt die Untersuchung fest.
+        </>
+      ),
+    },
+    {
+      q: "Sind transparente Aligner eine ästhetische Behandlung?",
+      aText:
+        "Transparente Aligner und Invisalign sind kieferorthopädische Behandlungen zur Korrektur der Zahnstellung. Weil die Schienen wenig sichtbar sind, werden sie oft als ästhetische Option wahrgenommen. Ob Aligner geeignet sind, hängt von der Fehlstellung ab.",
+      a: (
+        <>
+          Transparente Aligner und Invisalign sind kieferorthopädische Behandlungen zur Korrektur der Zahnstellung. Weil
+          die Schienen wenig sichtbar sind, werden sie oft als ästhetische Option wahrgenommen. Mehr zur{" "}
+          <Link href={unsichtbarHref} className="font-medium text-accent underline hover:text-primary">
+            unsichtbaren Zahnspange in Wien
+          </Link>
+          . Ob Aligner geeignet sind, hängt von der Fehlstellung ab.
+        </>
+      ),
+    },
+    {
+      q: "Was kosten ästhetische Zahnbehandlungen in Wien?",
+      aText:
+        "Auf dieser Seite sind keine verbindlichen Preise hinterlegt. Die Kosten hängen von der gewählten Leistung und dem individuellen Befund ab. Geschätzte Kosten besprechen wir in der Beratung.",
+      a: (
+        <>
+          Auf dieser Seite sind keine verbindlichen Preise hinterlegt. Die Kosten hängen von der gewählten Leistung und
+          dem individuellen Befund ab. Geschätzte Kosten besprechen wir in der Beratung oder über{" "}
+          <Link href={kontaktHref} className="font-medium text-accent underline hover:text-primary">
+            Kontakt
+          </Link>
+          .
+        </>
+      ),
+    },
+    {
+      q: "Wie finde ich heraus, welche Behandlung für mich geeignet ist?",
+      aText:
+        "Eine Untersuchung in der Ordination klärt, welche ästhetische oder kieferorthopädische Behandlung in Frage kommt. Für die kieferorthopädische Erstberatung ist eine kostenlose Beratung vorgesehen. Termine können online oder über die Ordination vereinbart werden.",
+      a: (
+        <>
+          Eine Untersuchung in der Ordination klärt, welche ästhetische oder kieferorthopädische Behandlung in Frage
+          kommt. Für die kieferorthopädische Erstberatung ist eine kostenlose Beratung vorgesehen. Termine können{" "}
+          <Link href={terminHref} className="font-medium text-accent underline hover:text-primary">
+            online
+          </Link>{" "}
+          oder über die Ordination vereinbart werden.
+        </>
+      ),
+    },
+  ];
 
   return (
     <PageContent title={title} lead={lead} locale={locale} dict={dict} skipProse>
+      {isDe ? (
+        <JsonLd
+          data={[
+            {
+              "@context": "https://schema.org",
+              "@type": "MedicalWebPage",
+              "@id": `${pageUrl}#webpage`,
+              url: pageUrl,
+              name: "Ästhetische zahnärztliche Leistungen in Wien",
+              headline: "Ästhetische zahnärztliche Leistungen in Wien",
+              description:
+                "Ästhetische Zahnmedizin in Wien: Aligner, Bleaching, Füllungen, Mundhygiene sowie Kronen und Brücken bei Zahnspange Sablania.",
+              inLanguage: "de-AT",
+              isPartOf: { "@id": websiteId },
+              author: { "@id": doctorId },
+              about: { "@id": dentistId },
+              mainEntity: { "@id": `${pageUrl}#service` },
+              primaryImageOfPage: {
+                "@type": "ImageObject",
+                url: `${base}${IMG.smile}`,
+              },
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Startseite",
+                  item: `${base}/`,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Ästhetische Zahnärztliche Leistungen",
+                  item: pageUrl,
+                },
+              ],
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Service",
+              "@id": `${pageUrl}#service`,
+              name: "Ästhetische zahnärztliche Leistungen",
+              serviceType: "Ästhetische Zahnmedizin / Zahnästhetik",
+              url: pageUrl,
+              provider: { "@id": dentistId },
+              areaServed: {
+                "@type": "City",
+                name: "Wien",
+              },
+              availableLanguage: ["German", "English", "Hindi"],
+              description:
+                "Überblick über ästhetische zahnärztliche Leistungen in Wien: Aligner, Bleaching, Füllungen, Mundhygiene, Kronen und Brücken.",
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: deFaqs.map((item) => ({
+                "@type": "Question",
+                name: item.q,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: item.aText,
+                },
+              })),
+            },
+          ]}
+        />
+      ) : null}
+
       <div className="space-y-0">
-        {/* Hero */}
         <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-[#1e3a66] to-primary-muted text-white shadow-soft-lg">
           <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
             <div className="px-6 py-10 sm:px-10 sm:py-12 lg:py-14">
@@ -151,7 +359,7 @@ export default function AestheticDentalServicesContent({
                   {h.ctaAesthetic}
                 </a>
                 <Link
-                  href={u("/online-termine")}
+                  href={terminHref}
                   className="inline-flex rounded-full border-2 border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/20"
                 >
                   {isDe ? "Termin online" : "Book online"}
@@ -162,7 +370,7 @@ export default function AestheticDentalServicesContent({
               <figure className="relative aspect-[4/5] w-full max-w-[min(100%,20rem)] overflow-hidden rounded-3xl border border-white/25 bg-white/[0.07] shadow-[0_24px_55px_-12px_rgba(0,0,0,0.45)] ring-1 ring-inset ring-white/15 sm:max-w-[22rem] lg:aspect-[3/4] lg:max-h-[min(26rem,52vh)] lg:w-full lg:max-w-md">
                 <Image
                   src={IMG.smile}
-                  alt={isDe ? "Strahlendes Lächeln" : "Radiant smile"}
+                  alt={isDe ? "Porträt mit sichtbarem Lächeln" : "Portrait with a visible smile"}
                   fill
                   className="object-cover object-[center_28%]"
                   sizes="(max-width: 1024px) 90vw, (max-width: 1280px) 28rem, 24rem"
@@ -177,7 +385,13 @@ export default function AestheticDentalServicesContent({
           </div>
         </section>
 
-        {/* Intro + smile images */}
+        {isDe ? (
+          <section className="mx-auto mt-12 max-w-3xl sm:mt-16">
+            <h2 className="text-xl font-bold text-primary sm:text-2xl">{h.defineH}</h2>
+            <p className="mt-4 text-base leading-relaxed text-gray-700">{h.defineP}</p>
+          </section>
+        ) : null}
+
         <div className="mx-auto mt-12 max-w-3xl space-y-6 text-base leading-relaxed text-gray-700 sm:mt-16">
           <p>{h.intro2}</p>
           <p>{h.intro3}</p>
@@ -188,47 +402,60 @@ export default function AestheticDentalServicesContent({
           <h2 className="mt-10 text-xl font-bold text-primary sm:text-2xl">{h.servicesH}</h2>
         </div>
 
-        {/* Service cards — 2×3 grid on md+ */}
         <div className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
           <ServiceCard
-            href={u("/unsichtbare-zahnspange-wien")}
+            href={unsichtbarHref}
             title={isDe ? "Unsichtbare Zahnspange" : "Invisible braces"}
             imageSrc={IMG.schiene}
-            alt={isDe ? "Aligner / Schiene" : "Clear aligner"}
+            alt={isDe ? "Transparente Aligner-Schiene" : "Clear aligner"}
           />
           <ServiceCard
-            href={u("/mundhygiene-wien")}
+            href={mundhygieneHref}
             title={isDe ? "Professionelle Mundhygiene" : "Professional oral hygiene"}
             imageSrc={IMG.hygiene}
-            alt={isDe ? "Professionelle Mundhygiene" : "Oral hygiene"}
+            alt={isDe ? "Zahnbürste und Mundpflegeprodukte" : "Oral hygiene"}
           />
           <ServiceCard
-            href={u("/zahnbleaching")}
+            href={bleachingHref}
             title={isDe ? "Zahnbleaching" : "Teeth whitening"}
             imageSrc={IMG.bleaching}
-            alt={isDe ? "Zahnbleaching" : "Whitening"}
+            alt={isDe ? "Zahnaufhellung in der Praxis" : "Whitening"}
           />
           <ServiceCard
-            href={u("/komposit-zahnfuellung")}
+            href={fuellungHref}
             title={isDe ? "Ästhetische Zahnfüllungen" : "Aesthetic fillings"}
             imageSrc={IMG.keramik}
-            alt={isDe ? "Keramik / ästhetische Versorgung" : "Ceramic restoration"}
+            alt={isDe ? "Zahnfarbene keramische Versorgung" : "Ceramic restoration"}
           />
           <ServiceCard
-            href={u("/krone-bruecke")}
+            href={kroneHref}
             title={isDe ? "Zahn Krone–Brücke" : "Crown & bridge"}
             imageSrc={IMG.bridgeWide}
-            alt={isDe ? "Krone und Brücke" : "Crown and bridge"}
+            alt={isDe ? "Zahnersatz mit Krone und Brücke" : "Crown and bridge"}
           />
           <ServiceCard
-            href={u("/kieferorthopaedie")}
-            title={isDe ? "Kieferorthopädie für Zahnspangen Wien" : "Orthodontics Vienna"}
+            href={kfoHref}
+            title={isDe ? "Kieferorthopädie Wien" : "Orthodontics Vienna"}
             imageSrc={IMG.bracesColor}
-            alt={isDe ? "Zahnspange" : "Braces"}
+            alt={isDe ? "Farbige Brackets einer festen Zahnspange" : "Braces"}
           />
         </div>
 
-        {/* Orthodontics narrative + image */}
+        {isDe ? (
+          <section className="mx-auto mt-16 max-w-3xl sm:mt-20">
+            <h2 className="text-xl font-bold text-primary sm:text-2xl">{h.matchH}</h2>
+            <p className="mt-4 text-base leading-relaxed text-gray-700">{h.matchLead}</p>
+            <ul className="mt-5 list-none space-y-3">
+              {h.matchItems.map((item) => (
+                <li key={item} className="flex gap-3 text-gray-800">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
+                  <span className="leading-relaxed">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
         <section className="mx-auto mt-16 max-w-3xl sm:mt-20">
           <h2 className="text-xl font-bold text-primary sm:text-2xl">{h.orthoH}</h2>
           <div className="relative mx-auto mt-6 aspect-[16/9] w-full max-w-xs overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-soft sm:max-w-sm">
@@ -242,20 +469,40 @@ export default function AestheticDentalServicesContent({
           </div>
           <p className="mt-6 text-base leading-relaxed text-gray-700">{h.orthoBody}</p>
           <p className="mt-4 text-base leading-relaxed text-gray-700">{h.orthoBody2}</p>
+          {isDe ? (
+            <p className="mt-4 text-base leading-relaxed text-gray-700">
+              Weitere Informationen:{" "}
+              <Link href={kfoHref} className="font-medium text-accent underline hover:text-primary">
+                Kieferorthopädie in Wien
+              </Link>
+              ,{" "}
+              <Link href={unsichtbarHref} className="font-medium text-accent underline hover:text-primary">
+                unsichtbare Zahnspange in Wien
+              </Link>
+              ,{" "}
+              <Link href={durchsichtigHref} className="font-medium text-accent underline hover:text-primary">
+                transparente Aligner
+              </Link>{" "}
+              und{" "}
+              <Link href={erwachseneHref} className="font-medium text-accent underline hover:text-primary">
+                Zahnspange für Erwachsene
+              </Link>
+              .
+            </p>
+          ) : null}
         </section>
 
-        {/* Invisalign / Lingual */}
         <section className="mx-auto mt-16 max-w-5xl sm:mt-20">
           <h2 className="text-center text-xl font-bold text-primary sm:text-2xl">{h.invisH}</h2>
           <div className="mt-8 grid gap-8 md:grid-cols-2">
             <Link
-              href={u("/unsichtbare-zahnspange-wien")}
+              href={unsichtbarHref}
               className="group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-soft"
             >
               <div className="relative aspect-[4/3] w-full">
                 <Image
                   src={IMG.schiene}
-                  alt={isDe ? "Unsichtbare Zahnspange / Aligner" : "Clear aligners"}
+                  alt={isDe ? "Transparente Aligner auf einem Modell" : "Clear aligners"}
                   fill
                   className="object-cover transition group-hover:scale-[1.02]"
                   sizes="50vw"
@@ -264,13 +511,13 @@ export default function AestheticDentalServicesContent({
               <p className="p-4 text-center font-semibold text-primary group-hover:text-accent">{h.invisSub1}</p>
             </Link>
             <Link
-              href={u("/unsichtbare-zahnspange-lingual-innenliegende-zahnspange")}
+              href={lingualHref}
               className="group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-soft"
             >
               <div className="relative aspect-[4/3] w-full">
                 <Image
                   src={IMG.lingual}
-                  alt={isDe ? "Lingualtechnik" : "Lingual braces"}
+                  alt={isDe ? "Lingualzahnspange von innen" : "Lingual braces"}
                   fill
                   className="object-contain bg-gray-50 p-2 transition group-hover:scale-[1.02]"
                   sizes="50vw"
@@ -281,11 +528,20 @@ export default function AestheticDentalServicesContent({
           </div>
         </section>
 
-        {/* Erstberatung + DrSS image */}
         <section className="mx-auto mt-16 max-w-3xl rounded-2xl border border-primary/15 bg-primary/[0.04] px-6 py-8 sm:mt-20 sm:px-10">
           <h2 className="text-xl font-bold text-primary sm:text-2xl">{h.consultH}</h2>
           <div className="relative mx-auto mt-6 aspect-[16/10] max-w-lg overflow-hidden rounded-xl border border-gray-100 shadow-soft">
-            <Image src={IMG.drSs} alt="" fill className="object-cover object-top" sizes="(max-width: 512px) 100vw, 512px" />
+            <Image
+              src={IMG.drSs}
+              alt={
+                isDe
+                  ? "Dr. med. dent. Manish Sablania, Fachzahnarzt für Kieferorthopädie in Wien"
+                  : "Dr Manish Sablania, orthodontist in Vienna"
+              }
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 512px) 100vw, 512px"
+            />
           </div>
           <p className="mt-6 text-base leading-relaxed text-gray-800">{h.consultBody}</p>
           <p className="mt-4 text-base leading-relaxed text-gray-800">{h.consultBody2}</p>
@@ -300,19 +556,34 @@ export default function AestheticDentalServicesContent({
             >
               {h.ctaConsult}
             </a>
-            <Link href={u("/kontakt")} className="inline-flex rounded-full border border-primary/30 px-6 py-3 text-sm font-semibold text-primary hover:bg-white">
+            <Link
+              href={kontaktHref}
+              className="inline-flex rounded-full border border-primary/30 px-6 py-3 text-sm font-semibold text-primary hover:bg-white"
+            >
               {isDe ? "Kontakt" : "Contact"}
             </Link>
           </div>
         </section>
 
-        {/* Doctor */}
         <section className="mx-auto mt-16 flex max-w-3xl flex-col gap-6 rounded-2xl border border-gray-100 bg-white p-8 shadow-soft-lg sm:mt-20 sm:flex-row sm:items-start">
           <div className="relative mx-auto aspect-[3/4] w-full max-w-[220px] shrink-0 overflow-hidden rounded-2xl bg-gray-50">
-            <Image src={IMG.drMansi} alt="Dr. Manish Sablania" fill className="object-cover object-top" sizes="220px" />
+            <Image
+              src={IMG.drMansi}
+              alt={isDe ? "Dr. med. dent. Manish Sablania" : "Dr. Manish Sablania"}
+              fill
+              className="object-cover object-top"
+              sizes="220px"
+            />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-primary">{h.arztH}</h2>
+            {isDe ? (
+              <>
+                <h2 className="text-xl font-bold text-primary">{h.localH}</h2>
+                <p className="mt-3 text-lg font-semibold text-primary">{h.arztH}</p>
+              </>
+            ) : (
+              <h2 className="text-xl font-bold text-primary">{h.arztH}</h2>
+            )}
             <p className="mt-1 text-gray-600">{h.arztSub}</p>
             <ul className="mt-4 space-y-2 text-gray-800">
               <li className="flex gap-2">
@@ -334,6 +605,17 @@ export default function AestheticDentalServicesContent({
             </a>
           </div>
         </section>
+
+        {isDe ? (
+          <section className="mx-auto mt-16 max-w-3xl sm:mt-20">
+            <h2 className="text-center text-xl font-bold text-primary sm:text-2xl">{h.faqH}</h2>
+            <div className="mt-8 space-y-3">
+              {deFaqs.map((item) => (
+                <FaqItem key={item.q} question={item.q} answer={item.a} />
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
     </PageContent>
   );

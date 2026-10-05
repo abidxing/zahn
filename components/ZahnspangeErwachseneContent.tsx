@@ -6,6 +6,11 @@ import PageContent from "./PageContent";
 import AdultsHeroSlider from "./AdultsHeroSlider";
 import { getHref } from "@/lib/paths";
 import { BOOKING_URL } from "@/lib/site";
+import {
+  getInsuranceCoverageIntro,
+  getInsuranceFundsLinkHint,
+} from "@/lib/healthInsurance";
+import HealthInsuranceFundLinks from "@/components/HealthInsuranceFundLinks";
 
 const ADULTS_HERO_BRACES =
   "/zahnspange-fuer-erwachsene/woman-with-dental-braces-teeth-glitter-lipstick-lips-talks-smiling-widely-blurred-background-room-home-extreme-closeup-scaled.jpg";
@@ -43,12 +48,6 @@ const IMG = {
   lingual: "/zahnspange-fuer-erwachsene/Lingualtechnik-640-%C3%97-500-px-e1670235670602.png",
   invisalign: "/zahnspange-fuer-erwachsene/SDC12926-.jpg",
 } as const;
-
-const INSURERS = [
-  { label: "SVS", href: "https://www.svs.at" },
-  { label: "BVA", href: "https://www.bvaeb.at" },
-  { label: "KFA", href: "https://www.oegk.at" },
-] as const;
 
 type Copy = {
   introTitle: string;
@@ -127,12 +126,12 @@ const COPY: Record<"de" | "en", Copy> = {
       title: "Rückerstattungsmöglichkeiten bei Zahnspangen für Erwachsene",
       lead:
         "Je nach Schwergrad der Zahnfehlstellung und Art der Behandlung werden von Krankenkassen oder Zusatzversicherungen Teile der Behandlung rückerstattet!",
-      kassenStrong: "Informationen über Rückerstattungen der Krankenkassen:",
+      kassenStrong: "Informationen über Rückerstattungen der Krankenkassen (ÖGK, SVS, BVAEB, KFA):",
       kassenHint:
-        "Bitte klicken Sie auf Ihre Kasse, Sie werden direkt auf die Informationsseite weitergeleitet.",
+        "Offizielle Informationen Ihrer Krankenkasse – in der Ordination werden Versicherte aller dieser Träger betreut.",
       zusatzStrong: "Informationen über die Rückerstattung von Zusatz-Versicherungen:",
       zusatzBody:
-        "Bitte nehmen Sie mit Ihrer Versicherung Kontakt auf, wir haben keinen Einblick in die unterschiedlichen Verträge.",
+        "Leistungen privater Zusatzversicherungen hängen vom Vertrag ab. Wir beraten Sie gerne zu den Unterlagen für Ihre Zusatzversicherung.",
     },
     process: {
       title: "Zahnregulierung für Erwachsene, der Ablauf:",
@@ -190,10 +189,12 @@ const COPY: Record<"de" | "en", Copy> = {
       title: "Reimbursement options for adult braces",
       lead:
         "Depending on the severity of misalignment and type of treatment, health insurers or supplementary insurance may reimburse part of the cost.",
-      kassenStrong: "Information on health fund reimbursement:",
-      kassenHint: "Please click on your fund – you will be taken to their information page.",
-      zusatzStrong: "Information on reimbursement from supplementary insurance:",
-      zusatzBody: "Please contact your insurer; we do not have access to individual policy terms.",
+      kassenStrong: "Health fund reimbursement (ÖGK, SVS, BVAEB, KFA):",
+      kassenHint:
+        "Official information from your fund—our practice treats insured members of all these schemes.",
+      zusatzStrong: "Private supplementary insurance:",
+      zusatzBody:
+        "Supplementary benefits depend on your policy. We are happy to advise on documentation for your supplementary insurer.",
     },
     process: {
       title: "Orthodontic treatment for adults – the process",
@@ -359,21 +360,14 @@ export default function ZahnspangeErwachseneContent({
         <section className="mx-auto mt-14 max-w-5xl sm:mt-16">
           <div className="rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/[0.05] via-white to-gray-50 p-6 shadow-soft sm:p-8 lg:p-10">
             <h2 className="text-xl font-bold text-primary sm:text-2xl">{c.refund.title}</h2>
+            <p className="mt-4 leading-relaxed text-gray-800">{getInsuranceCoverageIntro(locale)}</p>
             <p className="mt-4 leading-relaxed text-gray-800">{c.refund.lead}</p>
             <p className="mt-6 font-semibold text-gray-900">{c.refund.kassenStrong}</p>
-            <p className="mt-2 text-sm leading-relaxed text-gray-700">{c.refund.kassenHint}</p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              {INSURERS.map((ins) => (
-                <a
-                  key={ins.href}
-                  href={ins.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-w-[5rem] items-center justify-center rounded-full border border-primary/25 bg-white px-5 py-2.5 text-sm font-semibold text-primary shadow-sm transition hover:border-primary/50 hover:bg-primary/[0.06]"
-                >
-                  {ins.label}
-                </a>
-              ))}
+            <p className="mt-2 text-sm leading-relaxed text-gray-700">
+              {getInsuranceFundsLinkHint(locale)}
+            </p>
+            <div className="mt-4">
+              <HealthInsuranceFundLinks locale={locale} />
             </div>
             <p className="mt-8 font-semibold text-gray-900">{c.refund.zusatzStrong}</p>
             <p className="mt-2 leading-relaxed text-gray-800">{c.refund.zusatzBody}</p>

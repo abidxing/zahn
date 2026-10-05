@@ -11,7 +11,7 @@ const BODY = {
   de: {
     introTitle: "Praxis & Wissen",
     introText:
-      "Hier finden Sie Informationen und Einblicke rund um Kieferorthopädie, Zahnspangen und Krankenversicherung in Wien.",
+      "Hier finden Sie Informationen und Einblicke rund um Kieferorthopädie, Zahnspangen und Krankenkasse in Wien.",
     listTitle: "Aktuelle Artikel",
     readMore: "Artikel lesen",
     topicsTitle: "Weitere Themen",

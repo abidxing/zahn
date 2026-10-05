@@ -87,7 +87,7 @@ export default function KroneBrueckeContent({ locale, dict }: { locale: Locale; 
     arztLi1:
       "Qualifizierter Wahlkieferorthopäde für „Krankenkasse-Gratis Zahnspange“, spezialisiert in Kieferorthopädie und Orthodontie.",
     arztLi2:
-      "Über 28 Jahre Erfahrung und mehr als 7.800 kieferorthopädische Behandlungen und Zahnspangenfälle – mit Fokus auf das Wohlbefinden der Patientinnen und Patienten.",
+      "Über 28 Jahre Erfahrung und mehr als 8.000 kieferorthopädische Behandlungen und Zahnspangenfälle – mit Fokus auf das Wohlbefinden der Patientinnen und Patienten.",
     arztCta: "Termin zur kostenlosen Erstberatung",
     videoLabel: "Praxisvideo",
   };
@@ -140,7 +140,7 @@ export default function KroneBrueckeContent({ locale, dict }: { locale: Locale; 
     arztH: "Dr Manish Sablania M.Sc. Orthodontics",
     arztSub: "Specialist orthodontist Vienna 1200",
     arztLi1: "Qualified elective orthodontist for Austria’s publicly funded braces programme and comprehensive orthodontic care.",
-    arztLi2: "More than 28 years of experience and over 7,800 orthodontic treatments and braces cases.",
+    arztLi2: "More than 28 years of experience and over 8,000 orthodontic treatments and braces cases.",
     arztCta: "Book a free initial consultation",
     videoLabel: "Practice video",
   };

@@ -7,6 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import { getHref } from "@/lib/paths";
 import { BOOKING_URL, SITE_URL } from "@/lib/site";
 import { DOCTOR, PRACTICE, DEFAULT_OG_IMAGE } from "@/lib/practiceInfo";
+import { getInsuranceCoverageIntro } from "@/lib/healthInsurance";
 import { getArticleBySlug } from "@/lib/articles";
 
 const SLUG = "/wahlkieferorthopaede-vertragskieferorthopaede-oegk";
@@ -16,19 +17,19 @@ const GV_URL = "https://www.oesterreich.gv.at/de/themen/gesundheit/gratis_zahnsp
 const FAQS = [
   {
     q: "Was ist der Unterschied zwischen einem Wahl- und einem Vertragskieferorthopäden?",
-    a: "Ein Vertragskieferorthopäde rechnet genehmigte Kassenleistungen direkt mit der Krankenversicherung ab. Bei einem Wahlkieferorthopäden wird die Rechnung zunächst privat bezahlt. Anschließend kann abhängig von Bewilligung und Versicherungsregeln eine Kostenerstattung beantragt werden.",
+    a: "Ein Vertragskieferorthopäde rechnet genehmigte Kassenleistungen direkt mit der Krankenkasse ab. Bei einem Wahlkieferorthopäden wird die Rechnung zunächst privat bezahlt. Anschließend kann abhängig von Bewilligung und Versicherungsregeln eine Kostenerstattung beantragt werden.",
   },
   {
-    q: "Erstattet die ÖGK 80 Prozent meiner gesamten Rechnung?",
-    a: "Nicht unbedingt. Nach aktueller ÖGK-Information können bei einer genehmigten Wahlbehandlung 80 Prozent des gültigen Kassentarifs erstattet werden. Dieser Kassentarif kann niedriger sein als der tatsächliche Rechnungsbetrag.",
+    q: "Erstattet die Krankenkasse 80 Prozent meiner gesamten Rechnung?",
+    a: "Nicht unbedingt. Nach aktueller Information der Krankenkasse können bei einer genehmigten Wahlbehandlung 80 Prozent des gültigen Kassentarifs erstattet werden – nicht automatisch 80 Prozent der Privatrechnung. Bei Zahnspange Sablania ist das Honorar für die bewilligte Gratis-Zahnspange-Behandlung mit fester Metallzahnspange jedoch so festgelegt, dass die mögliche Kostenerstattung der Krankenkasse bei erfüllten Gratis-Zahnspange-Voraussetzungen (unter 18 Jahren, IOTN 4 oder IOTN 5) 100 Prozent unserer Rechnung abdecken kann. Diese Regelung gilt nicht für private Zusatzleistungen wie Keramik, Aligner oder Lingualtechnik.",
   },
   {
     q: "Wann bekommt ein Kind die Gratis Zahnspange?",
-    a: "Grundsätzlich müssen die geltenden Altersvoraussetzungen erfüllt sein und eine erhebliche Zahn- oder Kieferfehlstellung der IOTN-Stufe 4 oder 5 vorliegen. Die endgültige Entscheidung trifft die zuständige Krankenversicherung.",
+    a: "Grundsätzlich müssen die Altersvoraussetzungen erfüllt sein (6–18 Jahre) und eine erhebliche Zahn- oder Kieferfehlstellung der IOTN-Stufe 4 oder 5 vorliegen. Die endgültige Entscheidung trifft die zuständige Krankenkasse.",
   },
   {
-    q: "Wird Invisalign von der ÖGK bezahlt?",
-    a: "Invisalign und andere Clear Aligner gehören nicht automatisch zur öffentlich finanzierten Standardbehandlung. Ob ein Zuschuss möglich ist, sollte vor Behandlungsbeginn individuell mit der Krankenversicherung geklärt werden.",
+    q: "Wird Invisalign von der Krankenkasse bezahlt?",
+    a: "Invisalign und andere Clear Aligner gehören nicht automatisch zur öffentlich finanzierten Standardbehandlung. Ob ein Zuschuss möglich ist, sollte vor Behandlungsbeginn individuell mit der Krankenkasse geklärt werden.",
   },
   {
     q: "Muss ich die Zahnspange vor Behandlungsbeginn bewilligen lassen?",
@@ -54,8 +55,8 @@ const STEPS = [
     text: "Die geplante Therapie, die voraussichtliche Dauer und die Kosten werden erläutert. Patientinnen und Patienten sollten erkennen können, welche Leistungen privat sind.",
   },
   {
-    title: "Antrag bei der Krankenversicherung",
-    text: "Die erforderlichen Unterlagen werden entsprechend den Vorgaben bei der zuständigen Krankenversicherung eingereicht. Eine notwendige Bewilligung sollte vor Beginn der Behandlung vorliegen.",
+    title: "Antrag bei der Krankenkasse",
+    text: "Die erforderlichen Unterlagen werden entsprechend den Vorgaben bei der zuständigen Krankenkasse eingereicht. Eine notwendige Bewilligung sollte vor Beginn der Behandlung vorliegen.",
   },
   {
     title: "Behandlung und Kontrollen",
@@ -164,7 +165,7 @@ export default function WahlVertragArticle({
   return (
     <PageContent
       title={article.title}
-      lead="Wahlkieferorthopäde ÖGK – Abrechnung, Kassentarif und mögliche Kostenerstattung verständlich erklärt."
+      lead="Wahlkieferorthopäde und Krankenkasse – Abrechnung, Kassentarif und mögliche Kostenerstattung verständlich erklärt."
       locale={locale}
       dict={dict}
       skipProse
@@ -173,10 +174,10 @@ export default function WahlVertragArticle({
       <article className="mx-auto max-w-3xl">
         <header className="space-y-4">
           <p className="text-sm font-semibold uppercase tracking-wide text-accent">
-            Kieferorthopädie &amp; Krankenversicherung
+            Kieferorthopädie &amp; Krankenkasse
           </p>
           <h1 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl">
-            Wahlkieferorthopäde oder Vertragskieferorthopäde: Was bezahlt die ÖGK?
+            Wahlkieferorthopäde oder Vertragskieferorthopäde: Was bezahlt die Krankenkasse?
           </h1>
           <p className="text-sm text-gray-600">
             Autor und medizinisch geprüft von:{" "}
@@ -191,7 +192,7 @@ export default function WahlVertragArticle({
           </p>
           <p className="rounded-xl border border-amber-200/80 bg-amber-50/90 px-4 py-3 text-sm text-amber-950">
             Die Inhalte dienen der allgemeinen Information und ersetzen keine individuelle medizinische
-            oder verbindliche Auskunft der Krankenversicherung.
+            oder verbindliche Auskunft der Krankenkasse.
           </p>
         </header>
 
@@ -207,6 +208,7 @@ export default function WahlVertragArticle({
         </div>
 
         <div className="mt-10 space-y-6 text-base leading-relaxed text-gray-800">
+          <p>{getInsuranceCoverageIntro(locale)}</p>
           <p>
             Wer in Wien eine Zahnspange benötigt, stößt schnell auf Begriffe wie Vertragskieferorthopäde,
             Wahlkieferorthopäde, Kassentarif und{" "}
@@ -214,11 +216,11 @@ export default function WahlVertragArticle({
               Gratis Zahnspange
             </Link>
             . Für viele Familien ist zunächst nicht klar, was diese Begriffe bedeuten und welche Kosten von
-            der ÖGK übernommen werden.
+            der Krankenkasse übernommen werden.
           </p>
           <p>
             Der wichtigste Unterschied liegt in der Abrechnung: Ein Vertragskieferorthopäde rechnet bestimmte
-            genehmigte Kassenleistungen direkt mit der Krankenversicherung ab. Bei einem Wahlkieferorthopäden
+            genehmigte Kassenleistungen direkt mit der Krankenkasse ab. Bei einem Wahlkieferorthopäden
             bezahlen Patientinnen und Patienten die Rechnung grundsätzlich selbst und können anschließend –
             abhängig von Anspruch und Bewilligung – eine Kostenerstattung beantragen.
           </p>
@@ -237,7 +239,7 @@ export default function WahlVertragArticle({
           <div className="mt-4 space-y-4 leading-relaxed text-gray-800">
             <p>
               Ein Vertragskieferorthopäde hat für bestimmte kieferorthopädische Leistungen einen direkten
-              Vertrag mit der zuständigen Krankenversicherung. Wenn alle Voraussetzungen erfüllt sind und die
+              Vertrag mit der zuständigen Krankenkasse. Wenn alle Voraussetzungen erfüllt sind und die
               Behandlung bewilligt wurde, wird die entsprechende Kassenleistung direkt mit der Versicherung
               abgerechnet.
             </p>
@@ -264,12 +266,12 @@ export default function WahlVertragArticle({
             </p>
             <p>
               Anschließend können die Rechnung und die erforderlichen Behandlungsunterlagen bei der
-              Krankenversicherung eingereicht werden. Die Versicherung prüft, ob eine Kostenerstattung möglich
+              Krankenkasse eingereicht werden. Die Versicherung prüft, ob eine Kostenerstattung möglich
               ist und wie hoch diese ausfällt.
             </p>
             <p>
               Wichtig: Eine mögliche Erstattung richtet sich nicht automatisch nach der Höhe der Privatrechnung.
-              Nach aktueller Information der ÖGK können bei einer genehmigten Behandlung durch einen
+              Nach aktueller Information der Krankenkasse können bei einer genehmigten Behandlung durch einen
               entsprechend qualifizierten Wahlbehandler 80 Prozent des gültigen Kassentarifs erstattet werden.
               Das sind nicht automatisch 80 Prozent des tatsächlich bezahlten Rechnungsbetrags.
             </p>
@@ -280,33 +282,64 @@ export default function WahlVertragArticle({
           <h3 className="text-lg font-bold text-primary">Wichtig vor Behandlungsbeginn</h3>
           <p className="mt-2 text-sm leading-relaxed text-gray-800 sm:text-base">
             Lassen Sie Ihren Anspruch und die notwendige Bewilligung immer vor Beginn der Behandlung von Ihrer
-            Krankenversicherung bestätigen. Die Regeln können sich je nach Versicherung, Befund und Behandlung
+            Krankenkasse bestätigen. Die Regeln können sich je nach Versicherung, Befund und Behandlung
             unterscheiden.
           </p>
         </aside>
 
         <section className="mt-12">
-          <h2 className="text-2xl font-bold text-primary">Was bedeutet „80 Prozent des Kassentarifs“?</h2>
+          <h2 className="text-2xl font-bold text-primary">
+            100 % Kostenerstattung bei Zahnspange Sablania – Gratis-Zahnspange (unter 18 Jahren, IOTN 4 oder IOTN 5)
+          </h2>
           <div className="mt-4 space-y-4 leading-relaxed text-gray-800">
             <p>
-              Dieser Punkt führt häufig zu Missverständnissen. Die ÖGK berechnet eine mögliche Erstattung auf
-              Grundlage des festgelegten Kassentarifs für die jeweilige Leistung. Die private Rechnung eines
-              Wahlkieferorthopäden kann höher sein als dieser Tarif.
+              Bei Zahnspange Sablania ist unser Honorar für die bewilligte Gratis-Zahnspangen-Behandlung mit fester
+              Metallzahnspange so festgelegt, dass die mögliche Kostenerstattung der Krankenkasse bei erfüllten Gratis-Zahnspange-Voraussetzungen (unter 18 Jahren, IOTN 4 oder IOTN 5)
+              100&nbsp;% unserer Rechnung abdecken kann.
             </p>
+
             <div className="rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-5 py-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                Erklärbeispiel – keine aktuelle Tarifauskunft
+                Ihr Vorteil bei Zahnspange Sablania
               </p>
               <p className="mt-2 text-sm leading-relaxed text-gray-800 sm:text-base">
-                Wenn der festgelegte Kassentarif für eine bestimmte Leistung 1.000 Euro betragen würde, könnten
-                80 Prozent davon 800 Euro entsprechen. Kostet die private Behandlung beispielsweise 1.500 Euro,
-                würde die mögliche Erstattung deshalb nicht automatisch 1.200 Euro betragen.
+                Sind die Voraussetzungen für die Gratis Zahnspange erfüllt und wurde die Behandlung von der Krankenkasse
+                bewilligt, kann die Kostenerstattung 100&nbsp;% des von Zahnspange Sablania für diese konkrete
+                Behandlung verrechneten Honorars abdecken. Dadurch kann für diese Leistung kein verbleibender
+                Selbstbehalt entstehen.
               </p>
               <p className="mt-2 text-sm leading-relaxed text-gray-700">
-                Dieses Beispiel dient nur zur Erklärung. Es stellt keine aktuelle Tarifauskunft oder Zusage dar.
-                Die tatsächlich geltenden Beträge und Voraussetzungen müssen direkt mit der jeweiligen
-                Krankenversicherung geklärt werden.
+                Diese Regelung gilt für die bewilligte Gratis-Zahnspangen-Behandlung mit fester Metallzahnspange bei
+                Zahnspange Sablania. Sie gilt nicht automatisch für andere Behandlungen, private Zusatzleistungen oder
+                andere kieferorthopädische Ordinationen.
               </p>
+            </div>
+
+            <div className="flex gap-3 rounded-xl border border-sky-200/80 bg-sky-50/80 px-4 py-3">
+              <svg
+                className="mt-0.5 h-4 w-4 shrink-0 text-sky-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+                aria-hidden
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <div className="space-y-1 text-xs leading-relaxed text-gray-700 sm:text-sm">
+                <p>
+                  Besonders bei Zahnspange Sablania: Bei erfüllten Gratis-Zahnspange-Voraussetzungen (unter 18 Jahren, IOTN 4 oder IOTN 5) erhalten Sie für diese konkrete
+                  Behandlung bis zu 100&nbsp;% unserer Rechnung zurück.
+                </p>
+                <p>
+                  Die endgültige Bewilligung und Kostenerstattung erfolgt durch die Krankenkasse und hängt von der individuellen
+                  Anspruchsberechtigung ab.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -327,8 +360,9 @@ export default function WahlVertragArticle({
               <Link href={jugendHref} className="font-medium text-accent hover:underline">
                 Jugendliche
               </Link>{" "}
-              mit einer erheblichen Zahn- oder Kieferfehlstellung. Eine zentrale Voraussetzung ist normalerweise
-              die Einstufung in IOTN 4 oder IOTN 5.
+              im Alter von 6 bis 18 Jahren mit einer erheblichen Zahn- oder Kieferfehlstellung. Anspruch besteht
+              in der Regel vom 6. bis zum vollendeten 18. Lebensjahr. Eine zentrale Voraussetzung ist
+              normalerweise die Einstufung in IOTN 4 oder IOTN 5.
             </p>
             <p>
               IOTN steht für „Index of Orthodontic Treatment Need“. Mit diesem international verwendeten System
@@ -337,11 +371,11 @@ export default function WahlVertragArticle({
             </p>
             <p>Für eine mögliche Kassenleistung sind insbesondere folgende Punkte wichtig:</p>
             <ul className="list-disc space-y-2 pl-5">
-              <li>Das Kind oder der Jugendliche erfüllt die geltenden Altersvoraussetzungen.</li>
+              <li>Das Kind oder der Jugendliche ist 6 bis 18 Jahre alt und erfüllt die Altersvoraussetzungen der Krankenkasse.</li>
               <li>Es liegt eine medizinisch relevante Zahn- oder Kieferfehlstellung vor.</li>
               <li>Der Befund entspricht normalerweise IOTN 4 oder IOTN 5.</li>
               <li>Die erforderliche Untersuchung und Dokumentation wurden durchgeführt.</li>
-              <li>Die zuständige Krankenversicherung hat die Behandlung geprüft beziehungsweise bewilligt.</li>
+              <li>Die zuständige Krankenkasse hat die Behandlung geprüft beziehungsweise bewilligt.</li>
             </ul>
             <p>
               Eine sichtbare Fehlstellung allein bedeutet nicht automatisch, dass Anspruch auf die Gratis
@@ -356,7 +390,7 @@ export default function WahlVertragArticle({
           </h2>
           <div className="mt-4 space-y-4 leading-relaxed text-gray-800">
             <p>
-              Bei der öffentlich finanzierten Hauptbehandlung ist normalerweise eine feste Zahnspange mit
+              Bei der Gratis-Zahnspange ist normalerweise eine feste Zahnspange mit
               Metall-Brackets als Standard vorgesehen. Diese Behandlung richtet sich vor allem nach der
               medizinischen Notwendigkeit.
             </p>
@@ -445,7 +479,7 @@ export default function WahlVertragArticle({
                 {DOCTOR.name}, {DOCTOR.credentials}
               </Link>
               , ist Fachzahnarzt für Kieferorthopädie und qualifizierter Wahlkieferorthopäde für die
-              Krankenkasse-Gratis-Zahnspange. Er verfügt über mehr als 28 Jahre Erfahrung und hat über 7.800
+              Krankenkasse-Gratis-Zahnspange. Er verfügt über mehr als 28 Jahre Erfahrung und hat über 8.000
               kieferorthopädische Behandlungen und Zahnspangenfälle begleitet.
             </p>
             <p>
@@ -456,7 +490,7 @@ export default function WahlVertragArticle({
             <p>
               Beratungen sind auf Deutsch, Englisch und Hindi möglich. Vor der Behandlung werden der Befund, die
               verfügbaren Möglichkeiten, die voraussichtlichen Kosten und die notwendigen Schritte mit der
-              Krankenversicherung besprochen.
+              Krankenkasse besprochen.
             </p>
           </div>
         </section>
@@ -467,7 +501,7 @@ export default function WahlVertragArticle({
             Sie möchten wissen, welche Zahnspange geeignet ist und ob eine Kostenerstattung möglich sein könnte?
             Vereinbaren Sie einen persönlichen Beratungstermin bei Dr. Manish Sablania in 1200 Wien. Bitte
             beachten Sie, dass eine verbindliche Entscheidung über Anspruch, Bewilligung und Erstattung
-            ausschließlich von der zuständigen Krankenversicherung getroffen wird.
+            ausschließlich von der zuständigen Krankenkasse getroffen wird.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -531,7 +565,7 @@ export default function WahlVertragArticle({
           </ul>
           <p className="mt-4 text-sm leading-relaxed text-gray-600">
             Die Versicherungsinformationen wurden im Juli 2026 geprüft. Tarife und Voraussetzungen können sich
-            ändern. Verbindliche Auskünfte erhalten Sie direkt bei Ihrer Krankenversicherung.
+            ändern. Verbindliche Auskünfte erhalten Sie direkt bei Ihrer Krankenkasse.
           </p>
         </section>
       </article>

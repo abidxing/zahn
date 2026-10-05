@@ -88,6 +88,8 @@ export const SITEMAP_DE_PATHS: string[] = Object.keys(DE_TO_EN);
  * Included in the sitemap once; no EN hreflang pair.
  */
 export const DE_ONLY_SITEMAP_PATHS: string[] = [
+  "/gratis-zahnspange-wien-voraussetzungen",
+  "/wann-zum-kieferorthopaeden",
   "/wahlkieferorthopaede-vertragskieferorthopaede-oegk",
 ];
 

@@ -17,7 +17,7 @@ import { buildPageMetadata } from "@/lib/seo";
 const locale = "de" as const;
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Kieferorthopäde Wien 1200 | Dr. Manish Sablania",
+  title: "Kieferorthopädie Wien 1200 | Dr. Manish Sablania",
   description:
     "Dr. Manish Sablania ist Fachzahnarzt für Kieferorthopädie und Zahnarzt in 1200 Wien. Zahnspangen, Aligner und Behandlungen für Kinder, Jugendliche und Erwachsene.",
   dePath: "/",

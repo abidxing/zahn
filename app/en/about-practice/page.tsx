@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PageContent from "@/components/PageContent";
+import PracticeGalleryContent from "@/components/PracticeGalleryContent";
 import { getDictionary } from "@/lib/dictionaries";
 import { SITE_URL } from "@/lib/site";
 
@@ -7,7 +8,8 @@ const locale = "en" as const;
 
 export const metadata: Metadata = {
   title: "Our Practice | Dr. Manish Sablania",
-  description: "Modern orthodontics practice in Vienna.",
+  description:
+    "Modern orthodontics practice in Vienna 1200: photos of the waiting area, treatment rooms and atmosphere at Dr Manish Sablania’s practice.",
   alternates: {
     canonical: `${SITE_URL}/en/about-practice`,
     languages: { de: `${SITE_URL}/ueber-uns`, en: `${SITE_URL}/en/about-practice` },
@@ -29,6 +31,7 @@ export default function AboutPracticePage() {
       lead="Modern orthodontics in Vienna"
       locale={locale}
       dict={dict}
+      skipProse
     >
       <section className="mt-12">
         <h2 className="text-2xl font-bold text-primary mb-4">Our Philosophy</h2>
@@ -61,17 +64,8 @@ export default function AboutPracticePage() {
       </section>
 
       <section className="mt-12">
-        <h2 className="text-2xl font-bold text-primary mb-6">Practice images</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="aspect-[4/3] rounded-xl bg-gray-200 flex items-center justify-center text-gray-500 text-sm"
-            >
-              Placeholder image {i}
-            </div>
-          ))}
-        </div>
+        <h2 className="text-2xl font-bold text-primary">Practice images</h2>
+        <PracticeGalleryContent locale={locale} dict={dict} />
       </section>
     </PageContent>
   );

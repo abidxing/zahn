@@ -26,8 +26,8 @@ export default function DentistViennaContent({ locale, dict }: Props) {
       <h2>{isDe ? "Qualität in 1200 Wien – Ihre erste Wahl für gesunde Zähne" : "Quality in 1200 Vienna – your first choice for healthy teeth"}</h2>
       <p>
         {isDe
-          ? "In unserer Zahnarztpraxis im 20. Bezirk steht Ihre Zahngesundheit im Mittelpunkt. Als Zahnarzt und Kieferorthopäde in 1200 Wien bietet Dr. Manish Sablania Ihnen ein breites Spektrum an allgemeiner, ästhetischer Zahnheilkunde und Kieferorthopädie."
-          : "At our dental practice in Vienna’s 20th district, your oral health is our priority. As a dentist and orthodontist in 1200 Vienna, Dr. Manish Sablania offers a wide range of general, aesthetic dentistry and orthodontic services."}
+          ? "In unserer Zahnarztpraxis im 20. Bezirk steht Ihre Zahngesundheit im Mittelpunkt. Als Zahnarzt und Kieferorthopäde in 1200 Wien bietet Dr. Manish Sablania Ihnen ein breites Spektrum an allgemeiner, ästhetischer Zahnheilkunde und Kieferorthopädie. Versicherte der ÖGK, SVS, BVAEB und KFA (Wien) sind in der Ordination willkommen."
+          : "At our dental practice in Vienna’s 20th district, your oral health is our priority. As a dentist and orthodontist in 1200 Vienna, Dr. Manish Sablania offers a wide range of general, aesthetic dentistry and orthodontic services. Patients insured with ÖGK, SVS, BVAEB and KFA (Vienna) are welcome at the practice."}
       </p>
       <p>
         {isDe

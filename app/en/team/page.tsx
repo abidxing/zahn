@@ -14,7 +14,7 @@ const DOCTOR_IMAGE =
 const DOCTOR = {
   title: "Specialist orthodontist Dr. med. dent. Manish Sablania, BDS, M.Sc. – Orthodontist Vienna 1200",
   line2: "Qualified elective orthodontist for Austria’s publicly funded braces programme, specialised in orthodontics.",
-  bio: "More than 28 years of experience and over 7,800 orthodontic treatments and braces cases, with a strong focus on patient wellbeing.",
+  bio: "More than 28 years of experience and over 8,000 orthodontic treatments and braces cases, with a strong focus on patient wellbeing.",
 };
 
 export const metadata: Metadata = {

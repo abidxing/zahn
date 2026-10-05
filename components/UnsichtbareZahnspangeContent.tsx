@@ -4,20 +4,22 @@ import Image from "next/image";
 import type { Locale } from "@/lib/i18n";
 import type { Dictionary } from "@/lib/dictionaries";
 import PageContent from "./PageContent";
+import JsonLd from "./JsonLd";
 import { getHref } from "@/lib/paths";
-import { BOOKING_URL } from "@/lib/site";
+import { BOOKING_URL, SITE_URL } from "@/lib/site";
+import { DOCTOR, PRACTICE } from "@/lib/practiceInfo";
+import {
+  getInsuranceCoverageIntro,
+  getInsuranceFundsLinkHint,
+  getSupplementaryInsuranceCopy,
+} from "@/lib/healthInsurance";
+import HealthInsuranceFundLinks from "@/components/HealthInsuranceFundLinks";
 
 const IMG = {
   hero:
     "/Invisible-beaces/" +
     encodeURIComponent("Unsichtbare Zahnspange Wien Invisalign oder Clear Aligners.png"),
 } as const;
-
-const INSURERS = [
-  { label: "SVS", href: "https://www.svs.at" },
-  { label: "BVA", href: "https://www.bvaeb.at" },
-  { label: "KFA", href: "https://www.oegk.at" },
-] as const;
 
 function SectionTitle({
   children,
@@ -38,6 +40,47 @@ function SectionTitle({
   );
 }
 
+function InsuranceRefundSection({
+  locale,
+  sectionTitle,
+  lead,
+}: {
+  locale: Locale;
+  sectionTitle: string;
+  lead: string;
+}) {
+  const supplementary = getSupplementaryInsuranceCopy(locale);
+  return (
+    <section className="mx-auto mt-14 max-w-5xl sm:mt-16">
+      <SectionTitle className="text-center">{sectionTitle}</SectionTitle>
+      <div className="mt-8 rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/[0.05] to-white p-6 shadow-soft sm:p-8">
+        <p className="leading-relaxed text-gray-800">{getInsuranceCoverageIntro(locale)}</p>
+        <p className="mt-4 leading-relaxed text-gray-800">{lead}</p>
+        <p className="mt-6 text-sm font-semibold text-gray-900">{getInsuranceFundsLinkHint(locale)}</p>
+        <div className="mt-4">
+          <HealthInsuranceFundLinks locale={locale} />
+        </div>
+        <p className="mt-8 font-semibold text-gray-900">{supplementary.heading}</p>
+        <p className="mt-2 leading-relaxed text-gray-800">{supplementary.body}</p>
+      </div>
+    </section>
+  );
+}
+
+function FaqItem({ question, answer }: { question: string; answer: ReactNode }) {
+  return (
+    <details className="group rounded-2xl border border-gray-100 bg-white shadow-soft open:shadow-soft-lg">
+      <summary className="cursor-pointer list-none px-5 py-4 font-semibold text-primary transition-colors hover:bg-primary/[0.04] [&::-webkit-details-marker]:hidden">
+        <span className="flex items-start justify-between gap-3">
+          <span>{question}</span>
+          <span className="mt-0.5 shrink-0 text-primary-muted transition-transform group-open:rotate-180">▾</span>
+        </span>
+      </summary>
+      <div className="border-t border-gray-100 px-5 pb-5 pt-3 text-sm leading-relaxed text-gray-800">{answer}</div>
+    </details>
+  );
+}
+
 export default function UnsichtbareZahnspangeContent({
   locale,
   dict,
@@ -48,11 +91,94 @@ export default function UnsichtbareZahnspangeContent({
   const dePath = "/unsichtbare-zahnspange-wien";
   const titles = dict.routeTitles as Record<string, string>;
   const leads = dict.pageLeads as Record<string, string>;
-  const title = titles[dePath] ?? "Unsichtbare Zahnspange Wien";
-  const lead = leads[dePath];
+  const isDe = locale === "de";
+  const title = isDe ? "Unsichtbare Zahnspange in Wien" : (titles[dePath] ?? "Unsichtbare Zahnspange Wien");
+  const lead = isDe
+    ? "Eine unsichtbare Zahnspange besteht aus transparenten Alignern – herausnehmbaren, durchsichtigen Schienen, die Zahnfehlstellungen schrittweise korrigieren, ohne sichtbare Brackets. In der Ordination Zahnspange Sablania in Wien 1200 berät Dr. Manish Sablania zu dieser diskreten kieferorthopädischen Behandlung. Zur unsichtbaren Zahnspange in Wien gehören transparente Aligner; Invisalign ist ein etabliertes Aligner-System, das in der Praxis angeboten wird. Ob Aligner für Sie geeignet sind, klären wir in einer kostenlosen Erstberatung."
+    : leads[dePath];
   const terminHref = getHref("/online-termine", locale);
   const kontaktHref = getHref("/kontakt", locale);
-  const isDe = locale === "de";
+  const kfoHref = getHref("/kieferorthopaedie", locale);
+  const jugendHref = getHref("/zahnspange-fuer-jugendliche", locale);
+  const erwachseneHref = getHref("/zahnspange-fuer-erwachsene", locale);
+  const durchsichtigHref = getHref("/durchsichtige-zahnspange", locale);
+  const retainerHref = getHref("/kfo-retainer", locale);
+  const ablaufHref = getHref("/ablauf-zahnspange-kieferorthopaedie", locale);
+
+  const base = SITE_URL.replace(/\/$/, "");
+  const pageUrl = `${base}${dePath}`;
+  const dentistId = `${base}/#dentist`;
+  const websiteId = `${base}/#website`;
+  const doctorId = `${base}/#doctor`;
+
+  const deFaqs: { q: string; aText: string; a: ReactNode }[] = [
+    {
+      q: "Was ist eine unsichtbare Zahnspange?",
+      aText:
+        "Eine unsichtbare Zahnspange besteht aus transparenten Alignern: herausnehmbaren, durchsichtigen Schienen, die die Zähne schrittweise bewegen. Es werden keine Brackets oder Drähte verwendet.",
+      a: "Eine unsichtbare Zahnspange besteht aus transparenten Alignern: herausnehmbaren, durchsichtigen Schienen, die die Zähne schrittweise bewegen. Es werden keine Brackets oder Drähte verwendet.",
+    },
+    {
+      q: "Für wen eignet sich eine unsichtbare Zahnspange?",
+      aText:
+        "Transparente Aligner kommen für Jugendliche und Erwachsene in Frage, wenn die Zahnfehlstellung dafür geeignet ist. Ob Aligner oder eine andere Zahnspange besser passt, entscheidet die kieferorthopädische Untersuchung. Informationen gibt es auch zur Zahnspange für Jugendliche und zur Zahnspange für Erwachsene.",
+      a: (
+        <>
+          Transparente Aligner kommen für Jugendliche und Erwachsene in Frage, wenn die Zahnfehlstellung dafür geeignet
+          ist. Ob Aligner oder eine andere Zahnspange besser passt, entscheidet die kieferorthopädische Untersuchung.
+          Informationen gibt es auch zur{" "}
+          <Link href={jugendHref} className="font-medium text-accent hover:underline">
+            Zahnspange für Jugendliche
+          </Link>{" "}
+          und zur{" "}
+          <Link href={erwachseneHref} className="font-medium text-accent hover:underline">
+            Zahnspange für Erwachsene
+          </Link>
+          .
+        </>
+      ),
+    },
+    {
+      q: "Wie funktionieren transparente Aligner?",
+      aText:
+        "Die Schienen werden computergestützt geplant und im Labor angefertigt. Sie üben sanfte Kräfte aus und lenken die Zähne Schritt für Schritt in die geplante Richtung. In der Regel wird alle 12 bis 14 Tage ein neuer Aligner getragen.",
+      a: "Die Schienen werden computergestützt geplant und im Labor angefertigt. Sie üben sanfte Kräfte aus und lenken die Zähne Schritt für Schritt in die geplante Richtung. In der Regel wird alle 12 bis 14 Tage ein neuer Aligner getragen.",
+    },
+    {
+      q: "Wie lange muss man Aligner täglich tragen?",
+      aText:
+        "Die Aligner müssen in der Regel 20 bis 22 Stunden pro Tag getragen werden. Sie werden zum Essen, Trinken (außer Wasser) und zur Zahnpflege herausgenommen.",
+      a: "Die Aligner müssen in der Regel 20 bis 22 Stunden pro Tag getragen werden. Sie werden zum Essen, Trinken (außer Wasser) und zur Zahnpflege herausgenommen.",
+    },
+    {
+      q: "Was kostet eine unsichtbare Zahnspange in Wien?",
+      aText:
+        "Die Kosten hängen von der Fehlstellung und dem individuellen Behandlungsplan ab. Verbindliche Angaben erfolgen in der Beratung. Je nach Schweregrad und Art der Behandlung können Krankenkassen oder Zusatzversicherungen Teile der Behandlung erstatten.",
+      a: "Die Kosten hängen von der Fehlstellung und dem individuellen Behandlungsplan ab. Verbindliche Angaben erfolgen in der Beratung. Je nach Schweregrad und Art der Behandlung können Krankenkassen oder Zusatzversicherungen Teile der Behandlung erstatten.",
+    },
+    {
+      q: "Wie läuft eine Aligner-Behandlung ab?",
+      aText:
+        "Zuerst erfolgt eine kostenlose Erstberatung, danach Diagnostik mit Röntgen, Fotos und digitalen Scans. Anschließend folgen Behandlungsplan, Einsetzen der Aligner, Kontrollen und nach Abschluss oft eine Retention mit Retainern. Den Ablauf finden Sie auch unter Ablauf der Zahnspangenbehandlung.",
+      a: (
+        <>
+          Zuerst erfolgt eine kostenlose Erstberatung, danach Diagnostik mit Röntgen, Fotos und digitalen Scans.
+          Anschließend folgen Behandlungsplan, Einsetzen der Aligner, Kontrollen und nach Abschluss oft eine Retention
+          mit Retainern. Den Ablauf finden Sie auch unter{" "}
+          <Link href={ablaufHref} className="font-medium text-accent hover:underline">
+            Ablauf der Zahnspangenbehandlung
+          </Link>
+          .
+        </>
+      ),
+    },
+    {
+      q: "Was ist der Unterschied zwischen Invisalign und anderen Alignern?",
+      aText:
+        "Invisalign ist ein bestimmtes Aligner-System (Marke) zur unsichtbaren Zahnkorrektur. Transparente Aligner allgemein beschreiben die Behandlungsmethode mit durchsichtigen Schienen. Welche Variante geeignet ist, klären wir individuell in der Beratung.",
+      a: "Invisalign ist ein bestimmtes Aligner-System (Marke) zur unsichtbaren Zahnkorrektur. Transparente Aligner allgemein beschreiben die Behandlungsmethode mit durchsichtigen Schienen. Welche Variante geeignet ist, klären wir individuell in der Beratung.",
+    },
+  ];
 
   return (
     <PageContent title={title} lead={lead} locale={locale} dict={dict} skipProse>
@@ -62,7 +188,7 @@ export default function UnsichtbareZahnspangeContent({
           <div className="relative aspect-[2/1] min-h-[200px] w-full sm:aspect-[21/9]">
             <Image
               src={IMG.hero}
-              alt=""
+              alt={isDe ? "Transparente Aligner zur Zahnkorrektur" : "Clear aligners for tooth correction"}
               fill
               className="object-cover object-center"
               sizes="(max-width: 1024px) 100vw, 80vw"
@@ -77,35 +203,119 @@ export default function UnsichtbareZahnspangeContent({
 
         {isDe ? (
           <>
+            <JsonLd
+              data={[
+                {
+                  "@context": "https://schema.org",
+                  "@type": "MedicalWebPage",
+                  "@id": `${pageUrl}#webpage`,
+                  url: pageUrl,
+                  name: "Unsichtbare Zahnspange in Wien",
+                  headline: "Unsichtbare Zahnspange in Wien",
+                  description:
+                    "Unsichtbare Zahnspange Wien: transparente Aligner und Invisalign in Wien. Diskrete Zahnkorrektur bei Zahnspange Sablania.",
+                  inLanguage: "de-AT",
+                  isPartOf: { "@id": websiteId },
+                  author: { "@id": doctorId },
+                  about: { "@id": dentistId },
+                  mainEntity: { "@id": `${pageUrl}#service` },
+                  audience: {
+                    "@type": "PeopleAudience",
+                    name: "Jugendliche und Erwachsene",
+                  },
+                  primaryImageOfPage: {
+                    "@type": "ImageObject",
+                    url: `${base}${IMG.hero}`,
+                  },
+                },
+                {
+                  "@context": "https://schema.org",
+                  "@type": "BreadcrumbList",
+                  itemListElement: [
+                    {
+                      "@type": "ListItem",
+                      position: 1,
+                      name: "Startseite",
+                      item: `${base}/`,
+                    },
+                    {
+                      "@type": "ListItem",
+                      position: 2,
+                      name: "Unsichtbare Zahnspange Wien",
+                      item: pageUrl,
+                    },
+                  ],
+                },
+                {
+                  "@context": "https://schema.org",
+                  "@type": "Service",
+                  "@id": `${pageUrl}#service`,
+                  name: "Unsichtbare Zahnspange / Aligner",
+                  serviceType: "Kieferorthopädie / unsichtbare Zahnspange",
+                  url: pageUrl,
+                  provider: { "@id": dentistId },
+                  areaServed: {
+                    "@type": "City",
+                    name: "Wien",
+                  },
+                  availableLanguage: ["German", "English", "Hindi"],
+                  description:
+                    "Unsichtbare Zahnspange in Wien: transparente Aligner und Invisalign zur diskreten kieferorthopädischen Zahnkorrektur.",
+                },
+                {
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  mainEntity: deFaqs.map((item) => ({
+                    "@type": "Question",
+                    name: item.q,
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: item.aText,
+                    },
+                  })),
+                },
+              ]}
+            />
             <section className="mx-auto mt-12 max-w-3xl space-y-5 sm:mt-14">
-              <SectionTitle>Unsichtbare Zahnspange Wien: Innovative Behandlungsmethode mit Invisalign in Wien</SectionTitle>
+              <SectionTitle>Was ist eine unsichtbare Zahnspange?</SectionTitle>
               <p className="leading-relaxed text-gray-800">
-                Die Behandlungsmethode der unsichtbaren Zahnspange bietet verschiedene Namen, darunter
-                „Unsichtbare Zahnspange Wien“ und „Invisalign Wien“. Bei dieser modernen Art der Behandlung
-                von Zahnfehlstellungen werden transparente und durchsichtige Folien verwendet, die mithilfe
-                von computergestützter Technologie präzise im Labor hergestellt werden.
+                Eine unsichtbare Zahnspange besteht aus transparenten Alignern: dünnen, durchsichtigen Schienen, die
+                über die Zähne gesetzt werden. In der{" "}
+                <Link href={kfoHref} className="font-medium text-accent hover:underline">
+                  Kieferorthopädie in Wien
+                </Link>{" "}
+                bei Zahnspange Sablania dienen sie der diskreten Korrektur von Zahnfehlstellungen – ohne Brackets und
+                Drähte.
               </p>
               <p className="leading-relaxed text-gray-800">
-                Die unsichtbare Zahnspange Wien, auch bekannt als Invisible oder Invisalign Clear Aligners,
-                durchsichtige Schienen / Aligners, ermöglichen es sowohl Jugendlichen als auch Erwachsenen
-                von den Vorteilen der Clear Aligner Technologie zu profitieren.
+                Die Schienen werden mithilfe computergestützter Technologie geplant und im Labor gefertigt. Sie üben
+                sanfte Kräfte aus und lenken die Zähne Schritt für Schritt in die zuvor digital geplante Richtung.
+                Jugendliche und Erwachsene können so eine transparente Zahnschiene im Alltag tragen.
               </p>
               <p className="leading-relaxed text-gray-800">
-                Diese Schienentherapie ist eine hochmoderne Methode zur Korrektur von Zahnfehlstellungen, bei
-                der keine Brackets oder Drähte verwendet werden. Die Schienen üben sanfte Kräfte auf die
-                Zähne aus, um sie Schritt für Schritt in die zuvor digital geplante Richtung zu lenken.
+                Invisalign ist ein bestimmtes Aligner-System für diese Behandlungsmethode. Andere transparente Aligner
+                folgen demselben Prinzip. Welche Variante geeignet ist, hängt vom Befund ab und wird mit dem
+                Fachzahnarzt für Kieferorthopädie besprochen.
               </p>
               <p className="leading-relaxed text-gray-800">
-                Darüber hinaus bietet die unsichtbare Zahnspange auch eine verkürzte Behandlungszeit im
-                Vergleich zu traditionellen Methoden. In einigen Fällen kann die Dauer der Behandlung mit
-                Clear Aligners kürzer sein, was zu schnelleren Ergebnissen führt und weniger häufige Besuche
-                beim Kieferorthopäden erfordert.
+                In einigen Fällen kann die Behandlungsdauer mit Clear Aligners kürzer sein als mit einer festen
+                Zahnspange; das ist nicht bei jeder Fehlstellung so. Die Eignung einer unsichtbaren Zahnspange sollte
+                immer individuell entschieden werden.
               </p>
-              <p className="leading-relaxed text-gray-800">
-                Es ist jedoch wichtig anzumerken, dass jede Behandlungsmethode ihre eigenen Vor- und
-                Nachteile hat. Die Eignung der unsichtbaren Zahnspange für einen individuellen Fall sollte
-                immer in Absprache mit Facharzt für Kieferorthopädie entschieden werden, der die
-                spezifischen Bedürfnisse und Anforderungen des Patienten berücksichtigt.
+              <p className="text-sm leading-relaxed text-gray-700">
+                Verwandte Behandlungen:{" "}
+                <Link href={durchsichtigHref} className="font-medium text-accent hover:underline">
+                  durchsichtige Zahnspange
+                </Link>
+                ,{" "}
+                <Link href={jugendHref} className="font-medium text-accent hover:underline">
+                  Zahnspange für Jugendliche
+                </Link>{" "}
+                und{" "}
+                <Link href={erwachseneHref} className="font-medium text-accent hover:underline">
+                  Zahnspange für Erwachsene
+                </Link>
+                .
               </p>
             </section>
 
@@ -172,7 +382,7 @@ export default function UnsichtbareZahnspangeContent({
                 </div>
                 <div className="rounded-3xl border border-amber-200/80 bg-gradient-to-b from-amber-50/90 to-white p-6 shadow-soft sm:p-8">
                   <p className="text-center text-sm font-semibold text-primary">
-                    Unsichtbare Zahnspange Wien – Invisalign Clear Aligners
+                    Transparente Aligner – Vor- und Nachteile
                   </p>
                   <h3 className="mt-4 text-base font-bold text-amber-950 sm:text-lg">
                     Nachteile der Invisalign – Clear Aligners Therapie:
@@ -230,13 +440,17 @@ export default function UnsichtbareZahnspangeContent({
             </section>
 
             <section className="mx-auto mt-14 max-w-3xl rounded-2xl border border-gray-100 bg-white p-6 shadow-soft sm:mt-16 sm:p-8">
-              <SectionTitle>Details zur Behandlung mit Invisalign, der unsichtbaren Zahnspange Wien</SectionTitle>
+              <SectionTitle>Invisalign in Wien – unsichtbare Zahnkorrektur mit Alignern</SectionTitle>
               <p className="mt-5 leading-relaxed text-gray-800">
-                Die Behandlung mit Invisalign, der unsichtbaren Zahnspange, basiert auf einer Reihe von
-                transparenten Alignern, die speziell für jeden Patienten individuell angefertigt werden. Die
-                unsichtbaren Aligners werden 12 bis 14 Tage getragen, daraufhin kommen bereits neue Schienen zum
-                Einsatz. Wir geben unseren Patienten stets 4 bis 6 Aligners zum Wechseln mit nach Hause, damit Sie
-                nicht jedes Mal in die Praxis kommen müssen.
+                <strong>Kurz gesagt:</strong> Invisalign ist ein Marken-Aligner-System für die unsichtbare
+                Zahnkorrektur. In der Ordination Zahnspange Sablania in Wien wird Invisalign als eine Form der
+                transparenten Aligner-Behandlung angeboten – nicht als Sammelbegriff für jede unsichtbare Zahnspange.
+              </p>
+              <p className="mt-4 leading-relaxed text-gray-800">
+                Die Behandlung mit Invisalign basiert auf einer Reihe von transparenten Alignern, die speziell für
+                jeden Patienten individuell angefertigt werden. Die unsichtbaren Aligners werden 12 bis 14 Tage
+                getragen, daraufhin kommen bereits neue Schienen zum Einsatz. Wir geben unseren Patienten stets 4 bis 6
+                Aligners zum Wechseln mit nach Hause, damit Sie nicht jedes Mal in die Praxis kommen müssen.
               </p>
               <p className="mt-4 font-medium text-gray-900">Hier sind einige Details zur Behandlung:</p>
               <ul className="mt-5 space-y-5 border-l-2 border-primary/20 pl-5 text-gray-800">
@@ -295,7 +509,6 @@ export default function UnsichtbareZahnspangeContent({
                 </p>
               </div>
               <h3 className="text-lg font-bold text-primary sm:text-xl">Jugendliche schätzen die Diskretion der Clear Aligners</h3>
-              <p className="text-sm font-medium text-gray-700">Unsichtbare Zahnspange Wien - Invisalign Wien Clear Aligners</p>
               <ul className="space-y-4 text-gray-800">
                 <li className="flex gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
@@ -337,6 +550,11 @@ export default function UnsichtbareZahnspangeContent({
               <SectionTitle>Behandlung nach Schweregrad - IOTN</SectionTitle>
               <div className="mt-5 space-y-4 leading-relaxed text-gray-800">
                 <p>
+                  <strong>Kurz gesagt:</strong> Die Dauer der Behandlung mit Clear Alignern hängt vom Schweregrad der
+                  Zahnfehlstellung ab (Index of Orthodontic Treatment Need, IOTN). Eine genaue Diagnostik und
+                  Therapieplanung sind entscheidend.
+                </p>
+                <p>
                   Die Dauer der Behandlung mit Clear Aligners kann tatsächlich je nach Schweregrad der individuellen
                   Zahnfehlstellung (gemessen am Index of Orthodontic Treatment Need, IOTN) variieren. Eine genaue
                   Diagnostik und umfassende Therapieplanung sind entscheidende Erfolgsfaktoren für eine effektive
@@ -368,49 +586,20 @@ export default function UnsichtbareZahnspangeContent({
               </div>
             </section>
 
-            <section className="mx-auto mt-14 max-w-5xl sm:mt-16">
-              <SectionTitle className="text-center">
-                Invisalign Clear Aligners Zahnspange Rückerstattungsmöglichkeiten durch Krankenkasse oder
-                Zusatzversicherungen
-              </SectionTitle>
-              <div className="mt-8 rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/[0.05] to-white p-6 shadow-soft sm:p-8">
-                <p className="leading-relaxed text-gray-800">
-                  Je nach Schwergrad der Zahnfehlstellung und Art der Behandlung, werden von Krankenkassen oder
-                  Zusatzversicherungen Teile der Behandlung rückerstattet!
-                </p>
-                <p className="mt-6 font-semibold text-gray-900">Informationen über Rückerstattungen der Krankenkassen:</p>
-                <p className="mt-2 text-sm text-gray-700">
-                  Bitte klicken Sie auf Ihre Kasse, Sie werden direkt auf die Informationsseite weitergeleitet.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  {INSURERS.map((ins) => (
-                    <a
-                      key={ins.href}
-                      href={ins.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex min-w-[5rem] items-center justify-center rounded-full border border-primary/25 bg-white px-5 py-2.5 text-sm font-semibold text-primary shadow-sm transition hover:border-primary/50 hover:bg-primary/[0.06]"
-                    >
-                      {ins.label}
-                    </a>
-                  ))}
-                </div>
-                <p className="mt-8 font-semibold text-gray-900">
-                  Informationen über die Rückerstattung von Zusatz-Versicherungen:
-                </p>
-                <p className="mt-2 leading-relaxed text-gray-800">
-                  Bitte nehmen Sie mit Ihrer Versicherung Kontakt auf, wir haben keinen Einblick in die
-                  unterschiedlichen Verträge.
-                </p>
-              </div>
-            </section>
+            <InsuranceRefundSection
+              locale={locale}
+              sectionTitle="Invisalign Clear Aligners – Rückerstattung durch Krankenkasse (ÖGK, SVS, BVAEB, KFA) oder Zusatzversicherung"
+              lead="Je nach Schwergrad der Zahnfehlstellung und Art der Behandlung können Krankenkassen oder Zusatzversicherungen Teile der Behandlung erstatten."
+            />
 
             <section className="mx-auto mt-14 max-w-3xl sm:mt-16">
-              <SectionTitle>Unsichtbare Zahnspange Wien - Invisalign Clear Aligners in meiner Praxis</SectionTitle>
+              <SectionTitle>Ablauf der Aligner-Behandlung in Wien</SectionTitle>
               <p className="mt-4 leading-relaxed text-gray-800">
-                1200 Wien nähe zu 1210, 1190, 1220, 1020 und Klosterneuburg.
+                Die Beratung zur unsichtbaren Zahnspange findet in der Ordination {PRACTICE.name},{" "}
+                {PRACTICE.streetAddress}, {PRACTICE.postalCode} {PRACTICE.addressLocality}, statt.{" "}
+                {DOCTOR.name} ist {DOCTOR.jobTitleDe}.
               </p>
-              <h3 className="mt-8 text-lg font-bold text-primary">Aligners</h3>
+              <h3 className="mt-8 text-lg font-bold text-primary">So läuft die Aligner-Behandlung ab</h3>
               <ol className="mt-6 space-y-0">
                 {[
                   "Kostenlose Erstberatung für Zahnfehlstellungen in unserer Kieferorthopädie. Termin nur nach Vereinbarung!",
@@ -442,7 +631,10 @@ export default function UnsichtbareZahnspangeContent({
                           {isRet ? (
                             <>
                               <strong>Retention</strong>
-                              {" – der Beginn der Stabilisierung des Behandlungsergebnisses."}
+                              {" – der Beginn der Stabilisierung des Behandlungsergebnisses. "}
+                              <Link href={retainerHref} className="font-medium text-accent hover:underline">
+                                Retainer nach der Zahnkorrektur
+                              </Link>
                             </>
                           ) : (
                             step
@@ -453,6 +645,26 @@ export default function UnsichtbareZahnspangeContent({
                   );
                 })}
               </ol>
+              <p className="mt-6 leading-relaxed text-gray-800">
+                Den gesamten Ablauf in der Kieferorthopädie finden Sie unter{" "}
+                <Link href={ablaufHref} className="font-medium text-accent hover:underline">
+                  Ablauf der Zahnspangenbehandlung
+                </Link>
+                .
+              </p>
+            </section>
+
+            <section className="mx-auto mt-14 max-w-3xl sm:mt-16">
+              <SectionTitle>Häufige Fragen zur unsichtbaren Zahnspange</SectionTitle>
+              <p className="mt-4 leading-relaxed text-gray-800">
+                Kurze Antworten zu Alignern, Tragezeit, Ablauf und Invisalign in Wien – ohne pauschale
+                Preisversprechen.
+              </p>
+              <div className="mt-6 space-y-3">
+                {deFaqs.map((item) => (
+                  <FaqItem key={item.q} question={item.q} answer={item.a} />
+                ))}
+              </div>
             </section>
 
             <section className="mx-auto mt-12 flex max-w-3xl flex-wrap gap-3 sm:mt-14">
@@ -552,29 +764,11 @@ export default function UnsichtbareZahnspangeContent({
               </p>
             </section>
 
-            <section className="mx-auto mt-14 max-w-5xl sm:mt-16">
-              <SectionTitle className="text-center">Invisalign clear aligners – reimbursement from health funds or supplementary insurance</SectionTitle>
-              <div className="mt-8 rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/[0.05] to-white p-6 shadow-soft sm:p-8">
-                <p className="leading-relaxed text-gray-800">
-                  Depending on severity and type of treatment, health funds or supplementary insurance may reimburse part of the cost.
-                </p>
-                <p className="mt-4 text-sm font-semibold text-gray-900">Click your fund:</p>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  {INSURERS.map((ins) => (
-                    <a
-                      key={ins.href}
-                      href={ins.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex min-w-[5rem] items-center justify-center rounded-full border border-primary/25 bg-white px-5 py-2.5 text-sm font-semibold text-primary shadow-sm transition hover:border-primary/50 hover:bg-primary/[0.06]"
-                    >
-                      {ins.label}
-                    </a>
-                  ))}
-                </div>
-                <p className="mt-6 text-sm text-gray-700">For supplementary insurance, please contact your insurer.</p>
-              </div>
-            </section>
+            <InsuranceRefundSection
+              locale={locale}
+              sectionTitle="Invisalign clear aligners – reimbursement (ÖGK, SVS, BVAEB, KFA) or supplementary insurance"
+              lead="Depending on severity and type of treatment, health funds or supplementary insurance may reimburse part of the cost."
+            />
 
             <section className="mx-auto mt-14 max-w-3xl sm:mt-16">
               <SectionTitle>Invisible braces Vienna – Invisalign in our practice</SectionTitle>

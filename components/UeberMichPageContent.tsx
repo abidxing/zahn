@@ -8,6 +8,8 @@ import JsonLd from "./JsonLd";
 import { getHref } from "@/lib/paths";
 import { BOOKING_URL, SITE_URL } from "@/lib/site";
 import { DOCTOR, PRACTICE } from "@/lib/practiceInfo";
+import { getInsuranceCoverageIntro, getInsuranceBindingInfo } from "@/lib/healthInsurance";
+import HealthInsuranceFundLinks from "@/components/HealthInsuranceFundLinks";
 
 const IMG = {
   drSs: "/asethetic-dental-services/DrSS-qccg77rgojbtrcav5z20egkfccceiwy9acpag4xm8o.png",
@@ -70,7 +72,7 @@ const COPY: Record<Lang, Copy> = {
   de: {
     heroKicker: "Indischstämmiger Kieferorthopäde in Wien",
     heroTitle: "Fachzahnarzt für Kieferorthopädie und Allgemeinzahnarzt in 1200 Wien",
-    statValue: "7.800",
+    statValue: "8.000",
     statPlus: "+",
     statCaption: "kieferorthopädische Behandlungen und Zahnspangenfälle",
     ctaTag: "Kostenlose Erstberatung vereinbaren",
@@ -81,10 +83,10 @@ const COPY: Record<Lang, Copy> = {
       "In seiner Ordination in der Forsthausgasse behandelt Dr. Manish Sablania Zahn- und Kieferfehlstellungen bei Kindern, Jugendlichen und Erwachsenen. Abhängig vom Befund kommen feste Zahnspangen, herausnehmbare Geräte, transparente Aligner oder innenliegende Lingualzahnspangen infrage. Vor jeder Behandlung erfolgen eine persönliche Beratung, eine sorgfältige Diagnostik und eine individuelle Behandlungsplanung.",
     section2H: "Über 28 Jahre Erfahrung in der Kieferorthopädie",
     section2P:
-      "Dr. Sablania verfügt über mehr als 28 Jahre klinische Erfahrung und hat über 7.800 kieferorthopädische Behandlungen und Zahnspangenfälle begleitet. Sein Schwerpunkt liegt auf einer verständlichen Beratung und einer Behandlung, die auf Alter, Befund und persönliche Bedürfnisse abgestimmt wird.",
+      "Dr. Sablania verfügt über mehr als 28 Jahre klinische Erfahrung und hat über 8.000 kieferorthopädische Behandlungen und Zahnspangenfälle begleitet. Sein Schwerpunkt liegt auf einer verständlichen Beratung und einer Behandlung, die auf Alter, Befund und persönliche Bedürfnisse abgestimmt wird.",
     expLabel: "Über 28 Jahre Erfahrung",
     expSub: "Kieferorthopädie, Zahnregulierung und Zahnspange",
-    treatValue: "7.800+",
+    treatValue: "8.000+",
     treatSub: "kieferorthopädische Behandlungen und Zahnspangenfälle",
     qualH: "Ausbildung und Qualifikationen",
     quals: [
@@ -120,8 +122,10 @@ const COPY: Record<Lang, Copy> = {
     ],
     insuranceH: "Wahlkieferorthopäde und Gratis Zahnspange",
     insuranceP:
-      "Dr. Manish Sablania ist qualifizierter Wahlkieferorthopäde für die Krankenkasse-Gratis-Zahnspange. Kinder und Jugendliche bis zum vollendeten 18. Lebensjahr können bei einer schweren Zahn- oder Kieferfehlstellung der IOTN-Stufe 4 oder 5 anspruchsberechtigt sein. Vor Behandlungsbeginn ist eine Bewilligung der zuständigen Krankenkasse erforderlich. Nach aktueller ÖGK-Information können bei positiver Prüfung 80 % des gültigen Kassentarifs erstattet werden – nicht automatisch 80 % der Privatrechnung.",
+      "Dr. Manish Sablania ist qualifizierter Wahlkieferorthopäde für die Krankenkasse-Gratis-Zahnspange. Kinder und Jugendliche bis zum vollendeten 18. Lebensjahr können bei einer schweren Zahn- oder Kieferfehlstellung der IOTN-Stufe 4 oder 5 anspruchsberechtigt sein. Vor Behandlungsbeginn ist eine Bewilligung der zuständigen Krankenkasse (ÖGK, SVS, BVAEB oder KFA) erforderlich. Nach aktueller ÖGK-Information können bei positiver Prüfung 80 % des gültigen Kassentarifs erstattet werden – nicht automatisch 80 % der Privatrechnung.",
     insuranceLinkLabel: "Mehr zur Gratis Zahnspange",
+    insuranceNote:
+      "Keramik-Brackets, Clear Aligner und andere Privat-Upgrades sind nicht automatisch Teil des Kassenprogramms.",
     locationH: "Ordination von Dr. Manish Sablania",
     locationAddress: `${PRACTICE.streetAddress}, ${PRACTICE.postalCode} ${PRACTICE.addressLocality}`,
     locationHours: `${PRACTICE.openingHoursDisplayDe} (Termine nach Vereinbarung)`,
@@ -129,10 +133,6 @@ const COPY: Record<Lang, Copy> = {
     directionsLabel: "Anfahrt",
     faqH: "Häufige Fragen",
     faqs: [
-      {
-        q: "Ist Dr. Manish Sablania ein indischer Kieferorthopäde in Wien?",
-        a: "Ja. Dr. Manish Sablania ist ein indischstämmiger Fachzahnarzt für Kieferorthopädie und Allgemeinzahnarzt mit Ordination in 1200 Wien.",
-      },
       {
         q: "Welche Sprachen spricht Dr. Manish Sablania?",
         a: "Beratungen sind auf Deutsch, Englisch und Hindi möglich.",
@@ -143,7 +143,11 @@ const COPY: Record<Lang, Copy> = {
       },
       {
         q: "Bietet Dr. Sablania die Gratis Zahnspange an?",
-        a: "Dr. Sablania ist qualifizierter Wahlkieferorthopäde für die Gratis Zahnspange. Ob ein Anspruch besteht, hängt unter anderem vom Alter, dem Befund, der IOTN-Einstufung und der Bewilligung der zuständigen Krankenkasse ab.",
+        a: "Dr. Sablania ist qualifizierter Wahlkieferorthopäde (100% Rückerstattung) für die Gratis Zahnspange. In der Ordination werden Versicherte der ÖGK, SVS, BVAEB und KFA (Wien) behandelt. Ob ein Anspruch besteht, hängt unter anderem vom Alter, dem Befund, der IOTN-Einstufung und der Bewilligung Ihrer Krankenkasse ab.",
+      },
+      {
+        q: "Welche Krankenkassen werden in der Ordination behandelt?",
+        a: "Patientinnen und Patienten mit ÖGK, SVS, BVAEB und KFA – Sie müssen nicht vorab nachfragen, ob Ihre Kasse bei uns behandelt wird.",
       },
       {
         q: "Wo befindet sich die Ordination?",
@@ -173,7 +177,7 @@ const COPY: Record<Lang, Copy> = {
   en: {
     heroKicker: "Indian orthodontist in Vienna",
     heroTitle: "Specialist orthodontist and general dentist in 1200 Vienna",
-    statValue: "7,800",
+    statValue: "8,000",
     statPlus: "+",
     statCaption: "orthodontic treatments and braces cases",
     ctaTag: "Book a free initial consultation",
@@ -184,10 +188,10 @@ const COPY: Record<Lang, Copy> = {
       "At his practice in Forsthausgasse, Dr. Manish Sablania treats dental and jaw misalignments in children, teenagers and adults. Depending on the diagnosis, treatment may include fixed braces, removable appliances, clear aligners or lingual braces fitted behind the teeth. Every treatment begins with a personal consultation, careful diagnosis and an individual treatment plan.",
     section2H: "More Than 28 Years of Orthodontic Experience",
     section2P:
-      "Dr. Sablania has more than 28 years of clinical experience and has been involved in over 7,800 orthodontic treatments and braces cases. His approach focuses on clear explanations and treatment planning based on the patient’s age, diagnosis and individual needs.",
+      "Dr. Sablania has more than 28 years of clinical experience and has been involved in over 8,000 orthodontic treatments and braces cases. His approach focuses on clear explanations and treatment planning based on the patient’s age, diagnosis and individual needs.",
     expLabel: "More than 28 years of experience",
     expSub: "Orthodontics – tooth alignment – braces",
-    treatValue: "7,800+",
+    treatValue: "8,000+",
     treatSub: "orthodontic treatments and braces cases",
     qualH: "Education and Qualifications",
     quals: [
@@ -223,7 +227,7 @@ const COPY: Record<Lang, Copy> = {
     ],
     insuranceH: "Publicly Funded Braces and Reimbursement",
     insuranceP:
-      "Dr. Manish Sablania is a qualified elective orthodontist for Austria’s publicly funded braces programme. Children and teenagers under 18 with a severe dental or jaw misalignment classified as IOTN grade 4 or 5 may be eligible. Approval from the relevant health insurance provider is required before treatment begins. According to current ÖGK information, approved cases may receive reimbursement of 80% of the applicable contractual tariff—not necessarily 80% of the private invoice.",
+      "Dr. Manish Sablania is a qualified elective orthodontist for Austria’s publicly funded braces programme. Children and teenagers under 18 with a severe dental or jaw misalignment classified as IOTN grade 4 or 5 may be eligible. Approval from your health fund (ÖGK, SVS, BVAEB or KFA) is required before treatment begins. According to current ÖGK information, approved cases may receive reimbursement of 80% of the applicable contractual tariff—not necessarily 80% of the private invoice.",
     insuranceLinkLabel: "More about publicly funded braces",
     insuranceNote:
       "Private upgrades, ceramic brackets and clear aligners are not automatically covered by the publicly funded programme.",
@@ -235,10 +239,6 @@ const COPY: Record<Lang, Copy> = {
     faqH: "Frequently asked questions",
     faqs: [
       {
-        q: "Is Dr. Manish Sablania an Indian orthodontist in Vienna?",
-        a: "Yes. Dr. Manish Sablania is an Indian-origin specialist orthodontist and general dentist practising in 1200 Vienna.",
-      },
-      {
         q: "Which languages does Dr. Sablania speak?",
         a: "Consultations are available in German, English and Hindi.",
       },
@@ -248,7 +248,11 @@ const COPY: Record<Lang, Copy> = {
       },
       {
         q: "Does the practice offer publicly funded braces?",
-        a: "Dr. Sablania is a qualified elective orthodontist for Austria’s publicly funded braces programme. Eligibility depends on factors including age, diagnosis, IOTN classification and approval from the relevant health insurance provider.",
+        a: "Dr. Sablania is a qualified elective orthodontist for Austria’s publicly funded braces programme. The practice treats patients insured with ÖGK, SVS, BVAEB and KFA (Vienna). Eligibility depends on factors including age, diagnosis, IOTN classification and approval from your health fund.",
+      },
+      {
+        q: "Which health insurance funds do you treat?",
+        a: "ÖGK, SVS, BVAEB and KFA. You do not need to ask in advance whether we accept your fund.",
       },
       {
         q: "Where is the practice located?",
@@ -462,10 +466,15 @@ export default function UeberMichPageContent({ locale, dict }: { locale: Locale;
         {/* Section 6 – insurance */}
         <section className="mx-auto mt-14 max-w-5xl sm:mt-16">
           <h2 className="text-xl font-bold text-primary sm:text-2xl">{c.insuranceH}</h2>
-          <p className="mt-5 leading-relaxed text-gray-800">{c.insuranceP}</p>
+          <p className="mt-5 leading-relaxed text-gray-800">{getInsuranceCoverageIntro(locale)}</p>
+          <p className="mt-4 leading-relaxed text-gray-800">{c.insuranceP}</p>
+          <div className="mt-5">
+            <HealthInsuranceFundLinks locale={locale} />
+          </div>
           {c.insuranceNote ? (
             <p className="mt-4 text-sm leading-relaxed text-gray-600">{c.insuranceNote}</p>
           ) : null}
+          <p className="mt-4 text-sm leading-relaxed text-gray-600">{getInsuranceBindingInfo(locale)}</p>
           <p className="mt-5">
             <Link href={gratisHref} className="font-semibold text-accent hover:underline">
               {c.insuranceLinkLabel}

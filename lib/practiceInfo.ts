@@ -39,14 +39,14 @@ export const DOCTOR = {
   jobTitleEn: "Specialist orthodontist and general dentist",
   experienceYearsLabelDe: "Über 28 Jahre Erfahrung",
   experienceYearsLabelEn: "More than 28 years of experience",
-  treatmentsLabelDe: "mehr als 7.800 kieferorthopädische Behandlungen und Zahnspangenfälle",
-  treatmentsLabelEn: "over 7,800 orthodontic treatments and braces cases",
+  treatmentsLabelDe: "mehr als 8.000 kieferorthopädische Behandlungen und Zahnspangenfälle",
+  treatmentsLabelEn: "over 8,000 orthodontic treatments and braces cases",
   experienceComboDe:
-    "Über 28 Jahre Erfahrung und mehr als 7.800 kieferorthopädische Behandlungen und Zahnspangenfälle.",
+    "Über 28 Jahre Erfahrung und mehr als 8.000 kieferorthopädische Behandlungen und Zahnspangenfälle.",
   experienceComboEn:
-    "More than 28 years of experience and over 7,800 orthodontic treatments and braces cases.",
-  treatmentsStatDe: "7.800+",
-  treatmentsStatEn: "7,800+",
+    "More than 28 years of experience and over 8,000 orthodontic treatments and braces cases.",
+  treatmentsStatDe: "8.000+",
+  treatmentsStatEn: "8,000+",
   imagePath:
     "/Specialist%20dentist%20in%20orthodontics%20Dr%20med%20dent%20Manish%20Sablania%20BDS%20MSc%20Orthodontic%20dentist%20Vienna%201200.png",
 } as const;

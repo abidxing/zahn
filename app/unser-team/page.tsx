@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const DOCTOR = {
   title: "Fachzahnarzt für Kieferorthopädie Dr. med. dent. Manish Sablania BDS M.Sc. Kieferorthopäde Wien 1200",
   line2: "Qualifizierter Wahlkieferorthopäde für die Krankenkasse-Gratis-Zahnspange, spezialisiert auf Kieferorthopädie.",
-  bio: "Über 28 Jahre Erfahrung und mehr als 7.800 kieferorthopädische Behandlungen und Zahnspangenfälle. Das Wohl der Patientinnen und Patienten steht im Mittelpunkt.",
+  bio: "Über 28 Jahre Erfahrung und mehr als 8.000 kieferorthopädische Behandlungen und Zahnspangenfälle. Das Wohl der Patientinnen und Patienten steht im Mittelpunkt.",
 };
 
 const INTRO_DE = [

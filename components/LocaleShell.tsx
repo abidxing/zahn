@@ -25,14 +25,16 @@ export default function LocaleShell({ children }: { children: React.ReactNode })
   }, [locale]);
 
   return (
-    <div className="min-w-0 w-full overflow-x-hidden max-w-[100vw]">
+    <>
       <Navbar locale={locale} dict={dict} />
-      {isAblaufPage && <AblaufHeroSlider locale={locale} />}
-      <Breadcrumb locale={locale} dict={dict} />
-      <main className="min-h-screen min-w-0">{children}</main>
-      <GlobalContactBar dict={dict} />
-      <OnlineReceptionWidget locale={locale} dict={dict} />
-      <Footer locale={locale} dict={dict} />
-    </div>
+      <div className="min-w-0 w-full max-w-[100vw] overflow-x-hidden">
+        {isAblaufPage && <AblaufHeroSlider locale={locale} />}
+        <Breadcrumb locale={locale} dict={dict} />
+        <main className="min-h-screen min-w-0">{children}</main>
+        <GlobalContactBar dict={dict} />
+        <OnlineReceptionWidget locale={locale} dict={dict} />
+        <Footer locale={locale} dict={dict} />
+      </div>
+    </>
   );
 }

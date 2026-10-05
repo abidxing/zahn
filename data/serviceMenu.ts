@@ -29,7 +29,7 @@ export interface ServiceCategoryConfig {
  *
  * Labels for categories and individual items come from dictionaries:
  * - Category labels: dict.navDropdown.*
- * - Item labels: dict.routeTitles[dePath]
+ * - Item labels: dict.navMenuLabels[dePath] (short), else dict.routeTitles[dePath]
  */
 export const SERVICE_CATEGORIES: ServiceCategoryConfig[] = [
   {

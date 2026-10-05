@@ -1,9 +1,27 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { ReactNode } from "react";
 import type { Locale } from "@/lib/i18n";
 import type { Dictionary } from "@/lib/dictionaries";
 import PageContent from "./PageContent";
+import JsonLd from "./JsonLd";
 import { getHref } from "@/lib/paths";
+import { SITE_URL } from "@/lib/site";
+import { DOCTOR, PRACTICE } from "@/lib/practiceInfo";
+
+function FaqItem({ question, answer }: { question: string; answer: ReactNode }) {
+  return (
+    <details className="group rounded-2xl border border-gray-100 bg-white shadow-soft open:shadow-soft-lg">
+      <summary className="cursor-pointer list-none px-5 py-4 font-semibold text-primary transition-colors hover:bg-primary/[0.04] [&::-webkit-details-marker]:hidden">
+        <span className="flex items-start justify-between gap-3">
+          <span>{question}</span>
+          <span className="mt-0.5 shrink-0 text-primary-muted transition-transform group-open:rotate-180">▾</span>
+        </span>
+      </summary>
+      <div className="border-t border-gray-100 px-5 pb-5 pt-3 text-sm leading-relaxed text-slate-700">{answer}</div>
+    </details>
+  );
+}
 
 export default function ZahnspangeJugendlicheContent({
   locale,
@@ -15,28 +33,209 @@ export default function ZahnspangeJugendlicheContent({
   const dePath = "/zahnspange-fuer-jugendliche";
   const titles = dict.routeTitles as Record<string, string>;
   const leads = dict.pageLeads as Record<string, string>;
-  const title = titles[dePath] ?? "Zahnspange für Jugendliche";
-  const lead = leads[dePath];
+  const title =
+    locale === "de" ? "Zahnspange für Jugendliche in Wien" : (titles[dePath] ?? "Zahnspange für Jugendliche");
+  const lead =
+    locale === "de"
+      ? "Eine Zahnspange für Jugendliche in Wien richtet sich an Teenager mit Zahn- oder Kieferfehlstellungen. In der Ordination Zahnspange Sablania in Wien 1200 behandelt Dr. Manish Sablania Jugendliche kieferorthopädisch – mit fester Zahnspange, durchsichtigen Keramikbrackets oder unsichtbaren Alignern. In der Jugendphase lässt sich das Kieferwachstum oft noch gezielt nutzen."
+      : leads[dePath];
   const ablaufHref = getHref("/ablauf-zahnspange-kieferorthopaedie", locale);
   const terminHref = getHref("/online-termine", locale);
+  const kfoHref = getHref("/kieferorthopaedie", locale);
+  const unsichtbarHref = getHref("/unsichtbare-zahnspange-wien", locale);
+  const durchsichtigHref = getHref("/durchsichtige-zahnspange", locale);
+  const gratisHref = getHref("/gratis-zahnspange", locale);
+  const retainerHref = getHref("/kfo-retainer", locale);
+  const kinderHref = getHref("/zahnspange-fuer-kinder", locale);
+  const kontaktHref = getHref("/kontakt", locale);
+
+  const base = SITE_URL.replace(/\/$/, "");
+  const pageUrl = `${base}${dePath}`;
+  const dentistId = `${base}/#dentist`;
+  const websiteId = `${base}/#website`;
+  const doctorId = `${base}/#doctor`;
+
+  const deFaqs: { q: string; aText: string; a: ReactNode }[] = [
+    {
+      q: "Welche Zahnspange eignet sich für Jugendliche?",
+      aText:
+        "Welche Zahnspange für Jugendliche geeignet ist, hängt von der Zahn- und Kieferfehlstellung ab. In der Praxis kommen feste Metallbrackets, durchsichtige Keramikbrackets sowie Clear Aligners bzw. Invisalign in Frage. Die passende Lösung wird nach der Diagnose in der Beratung festgelegt.",
+      a: (
+        <>
+          Welche Zahnspange für Jugendliche geeignet ist, hängt von der Zahn- und Kieferfehlstellung ab. In der Praxis
+          kommen feste Metallbrackets, durchsichtige Keramikbrackets sowie Clear Aligners bzw. Invisalign in Frage. Die
+          passende Lösung wird nach der Diagnose in der Beratung festgelegt.
+        </>
+      ),
+    },
+    {
+      q: "Wann ist eine Zahnspange bei Jugendlichen sinnvoll?",
+      aText:
+        "Eine kieferorthopädische Behandlung ist bei Jugendlichen oft sinnvoll, wenn das Wechselgebiss weitgehend abgeschlossen ist. Die wichtige Hauptphase beginnt häufig ab dem 11. oder 12. Lebensjahr. Der Wachstums-Höhepunkt liegt bei Mädchen etwa mit 11 oder 12 Jahren und bei Jungen mit 13 oder 14 Jahren. Den konkreten Startzeitpunkt klären wir individuell.",
+      a: (
+        <>
+          Eine kieferorthopädische Behandlung ist bei Jugendlichen oft sinnvoll, wenn das Wechselgebiss weitgehend
+          abgeschlossen ist. Die wichtige Hauptphase beginnt häufig ab dem 11. oder 12. Lebensjahr. Der
+          Wachstums-Höhepunkt liegt bei Mädchen etwa mit 11 oder 12 Jahren und bei Jungen mit 13 oder 14 Jahren. Den
+          konkreten Startzeitpunkt klären wir individuell.
+        </>
+      ),
+    },
+    {
+      q: "Wie lange dauert eine Zahnspangenbehandlung?",
+      aText:
+        "Bei einer festsitzenden Zahnspange dauert die Behandlung im Durchschnitt etwa 18 bis 24 Monate – abhängig von der Fehlstellung. Die genaue Dauer wird in der kostenlosen Erstberatung besprochen.",
+      a: (
+        <>
+          Bei einer festsitzenden Zahnspange dauert die Behandlung im Durchschnitt etwa 18 bis 24 Monate – abhängig von
+          der Fehlstellung. Die genaue Dauer wird in der kostenlosen Erstberatung besprochen.
+        </>
+      ),
+    },
+    {
+      q: "Welche Arten von Zahnspangen gibt es für Jugendliche?",
+      aText:
+        "Für Jugendliche bieten wir unter anderem Metallbrackets, eine durchsichtige Keramikzahnspange und unsichtbare Clear Aligners (Invisalign) an. Feste und herausnehmbare Lösungen werden je nach Befund geplant. Mehr zur unsichtbaren Zahnspange.",
+      a: (
+        <>
+          Für Jugendliche bieten wir unter anderem Metallbrackets, eine durchsichtige Keramikzahnspange und unsichtbare
+          Clear Aligners (Invisalign) an. Feste und herausnehmbare Lösungen werden je nach Befund geplant. Mehr zur{" "}
+          <Link href={unsichtbarHref} className="font-medium text-accent hover:underline">
+            unsichtbaren Zahnspange
+          </Link>
+          .
+        </>
+      ),
+    },
+    {
+      q: "Was kostet eine Zahnspange für Jugendliche in Wien?",
+      aText:
+        "Die Kosten hängen von der gewählten Zahnspange und dem individuellen Behandlungsplan ab. In der kostenlosen Erstberatung erläutern wir die Optionen. Für anspruchsberechtigte Jugendliche kann unter bestimmten Voraussetzungen die Gratis Zahnspange in Frage kommen. Fragen dazu beantworten wir auch über die Kontaktseite.",
+      a: (
+        <>
+          Die Kosten hängen von der gewählten Zahnspange und dem individuellen Behandlungsplan ab. In der kostenlosen
+          Erstberatung erläutern wir die Optionen. Für anspruchsberechtigte Jugendliche kann unter bestimmten
+          Voraussetzungen die{" "}
+          <Link href={gratisHref} className="font-medium text-accent hover:underline">
+            Gratis Zahnspange
+          </Link>{" "}
+          in Frage kommen. Fragen dazu beantworten wir auch über die{" "}
+          <Link href={kontaktHref} className="font-medium text-accent hover:underline">
+            Kontaktseite
+          </Link>
+          .
+        </>
+      ),
+    },
+    {
+      q: "Wie läuft eine kieferorthopädische Beratung ab?",
+      aText:
+        "Die Erstberatung ist kostenlos und nur nach Terminvereinbarung. Anschließend erstellen wir Behandlungsunterlagen mit Röntgen, Fotos und digitalen Scans (ohne Abdrücke), besprechen den Plan und die passende Zahnspange. Den gesamten Ablauf finden Sie unter Ablauf Zahnspange und Kieferorthopädie.",
+      a: (
+        <>
+          Die Erstberatung ist kostenlos und nur nach Terminvereinbarung. Anschließend erstellen wir
+          Behandlungsunterlagen mit Röntgen, Fotos und digitalen Scans (ohne Abdrücke), besprechen den Plan und die
+          passende Zahnspange. Den gesamten Ablauf finden Sie unter{" "}
+          <Link href={ablaufHref} className="font-medium text-accent hover:underline">
+            Ablauf Zahnspange und Kieferorthopädie
+          </Link>
+          .
+        </>
+      ),
+    },
+  ];
 
   return (
     <PageContent title={title} lead={lead} locale={locale} dict={dict}>
       {locale === "de" && (
         <>
+          <JsonLd
+            data={[
+              {
+                "@context": "https://schema.org",
+                "@type": "MedicalWebPage",
+                "@id": `${pageUrl}#webpage`,
+                url: pageUrl,
+                name: "Zahnspange für Jugendliche in Wien",
+                headline: "Zahnspange für Jugendliche in Wien",
+                description:
+                  "Zahnspange Wien für Jugendliche und Teenager: feste oder unsichtbare Zahnspange in der Kieferorthopädie Sablania.",
+                inLanguage: "de-AT",
+                isPartOf: { "@id": websiteId },
+                author: { "@id": doctorId },
+                about: { "@id": dentistId },
+                mainEntity: { "@id": `${pageUrl}#service` },
+                audience: {
+                  "@type": "PeopleAudience",
+                  name: "Jugendliche und Teenager",
+                  suggestedMinAge: 10,
+                  suggestedMaxAge: 18,
+                },
+                primaryImageOfPage: {
+                  "@type": "ImageObject",
+                  url: `${base}/braces-for-teen/Jugendliche-600x469.png`,
+                },
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Startseite",
+                    item: `${base}/`,
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Zahnspange für Jugendliche",
+                    item: pageUrl,
+                  },
+                ],
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "Service",
+                "@id": `${pageUrl}#service`,
+                name: "Zahnspange für Jugendliche",
+                serviceType: "Kieferorthopädie / Zahnspange",
+                url: pageUrl,
+                provider: { "@id": dentistId },
+                areaServed: {
+                  "@type": "City",
+                  name: "Wien",
+                },
+                availableLanguage: ["German", "English", "Hindi"],
+                description:
+                  "Kieferorthopädische Behandlung für Jugendliche und Teenager in Wien: feste Metallzahnspange, keramische Zahnspange und unsichtbare Aligner.",
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                mainEntity: deFaqs.map((item) => ({
+                  "@type": "Question",
+                  name: item.q,
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: item.aText,
+                  },
+                })),
+              },
+            ]}
+          />
+
           {/* 1. HERO SECTION */}
           <section className="mb-10 rounded-3xl bg-gradient-to-r from-[#0f3c6e] via-[#155e75] to-[#38bdf8] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12 text-white">
             <div className="mx-auto flex max-w-5xl flex-col gap-6 lg:flex-row lg:items-center">
               <div className="flex-1">
                 <h2 className="text-3xl sm:text-4xl font-semibold leading-tight">
-                  Zahnspange für Jugendliche
+                  Feste und unsichtbare Zahnspange für Teenager
                 </h2>
                 <p className="mt-3 text-sm sm:text-base text-sky-50/90 leading-relaxed">
-                  In der Jugendphase lassen sich Zahn- und Kieferfehlstellungen oft effektiv korrigieren. Wir bieten feste
-                  und unsichtbare Optionen für Teenager.
-                </p>
-                <p className="mt-2 text-xs sm:text-sm text-sky-100/90">
-                  Zahnspange für Jugendliche Wien · Kieferorthopädie Jugendliche Wien · Zahnspange Teenager Wien
+                  Als Kieferorthopäde in Wien planen wir die Zahnspange für Jugendliche individuell. Feste
+                  Metallbrackets, keramische Zahnspange oder Clear Aligners kommen je nach Befund in Frage – in der
+                  Ordination in Wien 1200.
                 </p>
                 <div className="mt-4">
                   <Link
@@ -51,7 +250,7 @@ export default function ZahnspangeJugendlicheContent({
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-soft">
                   <Image
                     src="/braces-for-teen/Jugendliche-600x469.png"
-                    alt="Jugendliche mit Zahnspange in kieferorthopädischer Behandlung"
+                    alt="Jugendliche Patientin mit fester Zahnspange"
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 480px"
@@ -64,12 +263,20 @@ export default function ZahnspangeJugendlicheContent({
           {/* 2. INTRO SECTION */}
           <section className="mt-6 text-center">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#0f2e5c]">
-              Zahnspange für Jugendliche im Alter von <span className="underline decoration-sky-400">10 bis 18 Jahren</span>
+              Zahnspange Wien: Behandlungsmöglichkeiten für Jugendliche
             </h2>
             <p className="mt-3 mx-auto max-w-3xl text-sm sm:text-base text-slate-700 leading-relaxed">
-              Die vielfältigen Behandlungsmöglichkeiten für Jugendliche mit einer Zahnspange finden Sie
-              gleich nachstehend. Alle Behandlungsdetails erhalten Sie durch Klick auf die gewünschte
-              Behandlungsart!
+              Zwischen etwa 10 und 18 Jahren ist oft ein guter Zeitraum für die{" "}
+              <Link href={kfoHref} className="font-medium text-accent hover:underline">
+                Kieferorthopädie in Wien
+              </Link>
+              : Das Wachstum kann die Zahnregulierung unterstützen. Unten finden Sie die wichtigsten
+              Behandlungsmöglichkeiten – feste Metallbrackets, durchsichtige Keramikzahnspange und unsichtbare Aligner.
+              Für jüngere Kinder gibt es eine eigene Seite zur{" "}
+              <Link href={kinderHref} className="font-medium text-accent hover:underline">
+                Zahnspange für Kinder
+              </Link>
+              .
             </p>
           </section>
 
@@ -90,13 +297,8 @@ export default function ZahnspangeJugendlicheContent({
                 <div className="px-4 py-3 text-sm">
                   <h3 className="font-semibold text-[#0f2e5c]">Metallbrackets</h3>
                   <p className="mt-2 text-slate-700 leading-relaxed">
-                    Erwachsen-Metal brackets
-                  </p>
-                  <p className="text-slate-700 leading-relaxed">
-                    Junge Frau mit Zahnspangen in grauer Farbe
-                  </p>
-                  <p className="text-slate-700 leading-relaxed">
-                    Junge Frau mit Metallbrackets
+                    Feste Metallbrackets sind eine bewährte Zahnspange für Jugendliche. Sie eignen sich für viele Zahn-
+                    und Kieferfehlstellungen und werden individuell geplant.
                   </p>
                 </div>
               </article>
@@ -106,7 +308,7 @@ export default function ZahnspangeJugendlicheContent({
                 <div className="relative h-40 w-full">
                   <Image
                     src="/braces-for-teen/Zahnspange-1.png"
-                    alt="Durchsichtige Zahnspange – Keramik Zahnspange für Jugendliche"
+                    alt="Durchsichtige Keramikzahnspange bei einer Jugendlichen"
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 320px"
@@ -117,7 +319,12 @@ export default function ZahnspangeJugendlicheContent({
                     Durchsichtige Zahnspange – Unsichtbare Zahnspange
                   </h3>
                   <p className="mt-2 text-slate-700 leading-relaxed">
-                    Keramik Zahnspange für Kinder
+                    Keramikbrackets sind zahnfarben und dadurch unauffälliger als Metall. Sie sind eine feste,
+                    durchsichtige Option für Teenager. Mehr zur{" "}
+                    <Link href={durchsichtigHref} className="font-medium text-accent hover:underline">
+                      durchsichtigen Zahnspange
+                    </Link>
+                    .
                   </p>
                 </div>
               </article>
@@ -127,7 +334,7 @@ export default function ZahnspangeJugendlicheContent({
                 <div className="relative h-40 w-full">
                   <Image
                     src="/braces-for-teen/gallery-7-e1671902405301.jpg"
-                    alt="Clear Aligners und Invisalign unsichtbare Zahnspange für Jugendliche"
+                    alt="Jugendliche mit durchsichtigen Alignern"
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 320px"
@@ -138,7 +345,12 @@ export default function ZahnspangeJugendlicheContent({
                     Clear Aligners, Invisalign Unsichtbare Zahnspange
                   </h3>
                   <p className="mt-2 text-slate-700 leading-relaxed">
-                    Unsichtbare Zahnspange Wien - Invisalign Wien Clear Aligners Zahnspange für Erwachsene | Clear Aligners
+                    Clear Aligners und Invisalign sind herausnehmbare, nahezu unsichtbare Schienen. Ob sie für
+                    Jugendliche geeignet sind, hängt von der Fehlstellung ab. Details zur{" "}
+                    <Link href={unsichtbarHref} className="font-medium text-accent hover:underline">
+                      unsichtbaren Zahnspange in Wien
+                    </Link>
+                    .
                   </p>
                 </div>
               </article>
@@ -152,6 +364,10 @@ export default function ZahnspangeJugendlicheContent({
             </h2>
             <div className="mt-4 grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-start">
               <div className="space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed">
+                <p>
+                  <strong>Kurz gesagt:</strong> Schiefe Zähne oder eine Kieferfehlstellung können einzelne Zähne und das
+                  Kiefergelenk überlasten. In der Jugend kann das Wachstum noch für die Korrektur genutzt werden.
+                </p>
                 <p>
                   Schiefe Zähne oder eine Kiefer-Fehlstellung führen zu Überbelastungen einzelner Regionen.
                 </p>
@@ -215,7 +431,8 @@ export default function ZahnspangeJugendlicheContent({
               Wann ist eine kieferorthopädische Behandlung bei Jugendlichen notwendig?
             </h3>
             <p className="mt-2 text-sm sm:text-base text-slate-700 leading-relaxed">
-              <strong>Zeitpunkt ist sehr wichtig:</strong>
+              <strong>Antwort:</strong> Der Zeitpunkt ist sehr wichtig. Die Hauptphase beginnt häufig ab dem 11. oder
+              12. Lebensjahr – nach dem späten Wechselgebiss.
             </p>
             <div className="mt-2 space-y-2 text-sm sm:text-base text-slate-700 leading-relaxed">
               <p>
@@ -265,11 +482,10 @@ export default function ZahnspangeJugendlicheContent({
             <div className="mt-4 grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center">
               <div className="rounded-2xl border border-gray-100 bg-white px-4 py-4 shadow-soft text-sm sm:text-base text-slate-700 leading-relaxed">
                 <p>
-                  Je nach Zahnfehlstellung dauert eine Behandlung mit einer festsitzenden Zahnspange im
-                  Durchschnitt 18-24 Monate mit Brackets. Bei Erwachsenen variiert die Dauer von Fall zu Fall.
-                  Alle Details werden dann in dem kostenlosen Erstgespräch abgeklärt.
+                  <strong>Wie lange dauert es?</strong> Je nach Zahnfehlstellung dauert eine Behandlung mit einer
+                  festsitzenden Zahnspange im Durchschnitt 18–24 Monate mit Brackets. Die genaue Dauer hängt vom
+                  Einzelfall ab und wird in der kostenlosen Erstberatung geklärt.
                 </p>
-                <p className="mt-2">Zahnspange Erwachsene</p>
               </div>
               <div className="rounded-2xl border border-gray-100 bg-white shadow-soft overflow-hidden">
                 <div className="relative h-56 w-full">
@@ -290,6 +506,10 @@ export default function ZahnspangeJugendlicheContent({
             <h2 className="text-2xl md:text-3xl font-semibold text-[#0f2e5c]">
               Zahnspange bei Jugendlichen – Metall- und Keramikbrackets
             </h2>
+            <p className="mt-3 max-w-3xl text-sm sm:text-base text-slate-700 leading-relaxed">
+              Für die feste Zahnspange in Wien stehen Metallbrackets und unauffälligere Keramikbrackets zur Verfügung.
+              Welche Variante geeignet ist, hängt vom Befund und von den Wünschen der Jugendlichen ab.
+            </p>
             <div className="mt-4 grid gap-4 md:grid-cols-2 md:items-start">
               <div className="rounded-2xl border border-gray-100 bg-white shadow-soft overflow-hidden">
                 <div className="w-full bg-[#f8fafc]">
@@ -307,7 +527,7 @@ export default function ZahnspangeJugendlicheContent({
                 <div className="w-full bg-[#f8fafc]">
                   <Image
                     src="/braces-for-teen/close-up-portrait-young-cheerful-readhead-woman-orthodontist-1-scaled.jpg"
-                    alt="Keramikbrackets und Clear Aligners"
+                    alt="Patientin mit Keramikbrackets"
                     width={2560}
                     height={1708}
                     className="h-auto w-full"
@@ -321,8 +541,12 @@ export default function ZahnspangeJugendlicheContent({
           {/* 9. DER ABLAUF */}
           <section className="mt-10">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#0f2e5c]">
-              Zahnspange für Jugendliche, der Ablauf!
+              Ablauf der Zahnspangenbehandlung für Jugendliche
             </h2>
+            <p className="mt-3 max-w-3xl text-sm sm:text-base text-slate-700 leading-relaxed">
+              So läuft die kieferorthopädische Beratung und Behandlung in der Praxis ab: von der Erstberatung über die
+              Diagnose bis zur Retention.
+            </p>
             <div className="mt-4 grid gap-4">
               {[
                 "Kostenlose Erstberatung für Zahnfehlstellung in unserer Kieferorthopädie. Termin nur nach Vereinbarung!",
@@ -344,24 +568,44 @@ export default function ZahnspangeJugendlicheContent({
                 </div>
               ))}
             </div>
-            <p className="mt-4 inline-block rounded-full bg-sky-50 px-4 py-2 text-xs sm:text-sm text-[#0f3c6e] border border-sky-100">
-              Hier finden Sie den gesamten Ablauf in meiner Kieferorthopädie im Detail erklärt.
-            </p>
-            <p className="mt-2">
+            <p className="mt-4 text-sm sm:text-base text-slate-700 leading-relaxed">
+              Nach der aktiven Phase sichern{" "}
+              <Link href={retainerHref} className="font-medium text-accent hover:underline">
+                KFO-Retainer
+              </Link>{" "}
+              das Ergebnis. Den gesamten Ablauf in der Kieferorthopädie finden Sie hier im Detail:{" "}
               <Link href={ablaufHref} className="text-accent font-medium hover:underline">
-                Zum detaillierten Behandlungsablauf
+                Ablauf der Zahnspangenbehandlung
               </Link>
+              .
             </p>
           </section>
 
-          {/* 10. FINAL CTA SECTION */}
+          {/* 10. FAQ */}
+          <section className="mt-10">
+            <h2 className="text-2xl md:text-3xl font-semibold text-[#0f2e5c]">
+              Häufige Fragen zur Zahnspange für Jugendliche
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm sm:text-base text-slate-700 leading-relaxed">
+              Kurze Antworten zu Zahnspange, Zeitpunkt, Dauer und Beratung in Wien – ohne pauschale Preis- oder
+              Erstattungsversprechen.
+            </p>
+            <div className="mt-6 space-y-3">
+              {deFaqs.map((item) => (
+                <FaqItem key={item.q} question={item.q} answer={item.a} />
+              ))}
+            </div>
+          </section>
+
+          {/* 11. FINAL CTA SECTION */}
           <section className="mt-14 mb-2 rounded-3xl bg-[#0f3c6e] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12 text-white text-center">
             <h2 className="text-2xl sm:text-3xl font-semibold">
               Beratung zur Zahnspange für Jugendliche vereinbaren
             </h2>
             <p className="mt-3 text-sm sm:text-base text-sky-100 max-w-xl mx-auto leading-relaxed">
-              Wir beraten Sie individuell zur passenden Behandlung für Jugendliche – mit festen oder unsichtbaren
-              Optionen.
+              Wir beraten Sie in der Praxis {PRACTICE.name}, {PRACTICE.streetAddress}, {PRACTICE.postalCode}{" "}
+              {PRACTICE.addressLocality}, individuell zur passenden Behandlung für Jugendliche – mit festen oder
+              unsichtbaren Optionen. {DOCTOR.name}, {DOCTOR.jobTitleDe}.
             </p>
             <div className="mt-5 flex justify-center">
               <Link

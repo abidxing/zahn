@@ -21,7 +21,7 @@ const GA_MEASUREMENT_ID = "G-MXDRDTJFB3";
 export const metadata: Metadata = {
   metadataBase: getMetadataBase(),
   title: {
-    default: "Kieferorthopäde Wien 1200 | Dr. Manish Sablania",
+    default: "Kieferorthopädie Wien 1200 | Dr. Manish Sablania",
     template: "%s | Zahnspange Sablania",
   },
   description:

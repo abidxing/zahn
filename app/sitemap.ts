@@ -16,7 +16,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: isHome ? "weekly" : ("monthly" as const),
       priority: isHome
         ? 1
-        : path.includes("ueber-mich") || path.includes("/about") || path.includes("wahlkieferorthopaede")
+        : path.includes("ueber-mich") ||
+            path.includes("/about") ||
+            path.includes("wahlkieferorthopaede") ||
+            path.includes("wann-zum-kieferorthopaeden") ||
+            path.includes("gratis-zahnspange-wien-voraussetzungen")
           ? 0.9
           : 0.8,
     });

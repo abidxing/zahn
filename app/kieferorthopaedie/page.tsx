@@ -19,7 +19,11 @@ const FAQS = [
   },
   {
     q: "Gibt es eine Gratis Zahnspange?",
-    a: "Unter bestimmten Voraussetzungen (u. a. Alter und IOTN 4 oder 5) kann eine öffentlich geförderte Behandlung möglich sein. Details und Ablauf erklären wir auf der Seite zur Gratis Zahnspange.",
+    a: "Unter bestimmten Voraussetzungen (u. a. Alter und IOTN 4 oder 5) kann eine öffentlich geförderte Behandlung möglich sein. In der Ordination werden Versicherte der ÖGK, SVS, BVAEB und KFA (Wien) behandelt. Details und Ablauf erklären wir auf der Seite zur Gratis Zahnspange.",
+  },
+  {
+    q: "Welche Krankenkassen werden behandelt?",
+    a: "ÖGK, SVS, BVAEB und KFA (besonders in Wien). Sie müssen nicht vorab prüfen, ob Ihre Kasse bei uns behandelt wird.",
   },
   {
     q: "Wer ist der behandelnde Kieferorthopäde?",
@@ -89,6 +93,14 @@ export default function KieferorthopaediePage() {
           </Link>
         </li>
       </ul>
+
+      <p className="mt-8 text-gray-600">
+        Nicht jede Auffälligkeit braucht sofort eine Zahnspange. Zehn typische Gründe für eine Untersuchung
+        beschreibt der Artikel{" "}
+        <Link href="/wann-zum-kieferorthopaeden" className="text-accent hover:underline">
+          Wann sollte man zum Kieferorthopäden?
+        </Link>
+      </p>
 
       <h2 className="text-2xl font-bold text-primary mt-12 mb-4">{k.process}</h2>
       <p className="text-gray-600">

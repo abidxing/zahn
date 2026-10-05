@@ -132,7 +132,7 @@ export const dictionaries = {
       "/zahnbleaching": "Zahnbleaching",
       "/zahnersatz": "Zahnersatz",
       "/ablauf-zahnspange-kieferorthopaedie": "Ablauf Zahnspange & Kieferorthopädie",
-      "/gratis-zahnspange": "Gratis Zahnspange in Wien – Voraussetzungen und ÖGK-Erstattung",
+      "/gratis-zahnspange": "Gratis Zahnspange in Wien",
       "/unsichtbare-zahnspange-lingual-innenliegende-zahnspange": "Unsichtbare Zahnspange Lingual",
       "/durchsichtige-zahnspange": "Durchsichtige Zahnspange",
       "/komposit-zahnfuellung": "Komposit-Zahnfüllung",
@@ -142,8 +142,30 @@ export const dictionaries = {
       "/implantat-wien": "Implantat Wien",
       "/zahnarzt-1200-wien": "Zahnarzt 1200 Wien",
       "/artikel": "Artikel",
+      "/gratis-zahnspange-wien-voraussetzungen":
+        "Wer bekommt eine Gratis Zahnspange in Wien? Voraussetzungen einfach erklärt",
+      "/wann-zum-kieferorthopaeden":
+        "Wann sollte man zum Kieferorthopäden? 10 wichtige Anzeichen bei Kindern und Erwachsenen",
       "/wahlkieferorthopaede-vertragskieferorthopaede-oegk":
-        "Wahlkieferorthopäde oder Vertragskieferorthopäde: Was bezahlt die ÖGK?",
+        "Wahlkieferorthopäde oder Vertragskieferorthopäde: Was bezahlt die Krankenkasse?",
+    } as Record<string, string>,
+    navMenuLabels: {
+      "/ablauf-zahnspange-kieferorthopaedie": "Ablauf Zahnspange & KFO",
+      "/zahnarzt-1200-wien": "Zahnarzt 1200 Wien",
+      "/gratis-zahnspange": "Gratis Zahnspange",
+      "/unsichtbare-zahnspange-wien": "Unsichtbare Zahnspange Wien",
+      "/unsichtbare-zahnspange-lingual-innenliegende-zahnspange": "Lingualzahnspange",
+      "/zahnspange-fuer-kinder": "Zahnspange für Kinder",
+      "/zahnspange-fuer-jugendliche": "Zahnspange für Jugendliche",
+      "/zahnspange-fuer-erwachsene": "Zahnspange für Erwachsene",
+      "/myofunktionelle-therapie": "Myofunktionelle Therapie",
+      "/kfo-retainer": "KFO Retainer",
+      "/krone-bruecke": "Krone & Brücke",
+      "/asethetic-dental-services": "Ästhetische Zahnheilkunde",
+      "/mundhygiene-wien": "Mundhygiene Wien",
+      "/zahnbleaching": "Zahnbleaching",
+      "/komposit-zahnfuellung": "Komposit-Zahnfüllung",
+      "/sportschutz-mouthguards": "Sportschutz-Mouthguards",
     } as Record<string, string>,
     homepage: {
       heroTitle: "Ihre Spezialisten für moderne Zahnspangen in Wien",
@@ -286,7 +308,7 @@ export const dictionaries = {
       bracesCategoriesCardInvisalign: "Unsichtbare Zahnspange Invisalign – transparente Schienen für eine diskrete Zahnkorrektur.",
       bracesCategoriesCardLingual: "Unsichtbare Lingualzahnspange – innenliegende feste Zahnspange für maximale Ästhetik.",
       digitalPracticeTitle: "Digitale Praxis",
-      digitalPracticeStat1Number: "7.800+",
+      digitalPracticeStat1Number: "8.000+",
       digitalPracticeStat1Text: "Kieferorthopädische Behandlungen und Zahnspangenfälle",
       digitalPracticeStat2Number: "28+ Jahre Erfahrung",
       digitalPracticeStat2Text: "",
@@ -410,7 +432,11 @@ export const dictionaries = {
         { question: "Ab wann kann mein Kind zur Kieferorthopädie?", answer: "Eine erste Vorstellung ist oft ab etwa 8–10 Jahren sinnvoll, wenn die bleibenden Frontzähne durchbrechen. So können wir früh erkennen, ob eine Behandlung nötig ist. Mehr unter Zahnspange für Kinder." },
         { question: "Tut eine feste Zahnspange weh?", answer: "Nach dem Anlegen und nach Kontrollen kann es kurzzeitig zu Druck oder leichten Schmerzen kommen. Diese klingen in der Regel innerhalb weniger Tage ab. Moderne Bögen und Bracket-Designs sind schonender als früher." },
         { question: "Wie lange dauert eine Behandlung?", answer: "Die Dauer hängt von der Fehlstellung und der gewählten Methode ab – oft zwischen einem und zwei Jahren. Nach der aktiven Phase folgt die Retainer-Phase zur Stabilisierung." },
-        { question: "Übernimmt die Kasse die Kosten?", answer: "Unter bestimmten Voraussetzungen (u. a. Alter und IOTN 4 oder 5) kann eine Förderung möglich sein. Als Wahlkieferorthopäde prüft die Krankenkasse den Einzelfall; nach aktueller ÖGK-Information können 80 % des gültigen Kassentarifs erstattet werden. Details finden Sie auf unserer Seite Gratis Zahnspange." },
+        {
+          question: "Übernimmt die Kasse die Kosten?",
+          answer:
+            "Unter bestimmten Voraussetzungen (u. a. Alter und IOTN 4 oder 5) kann eine Förderung möglich sein. In der Ordination werden Versicherte der ÖGK, SVS, BVAEB und KFA (Wien) behandelt. Als Wahlkieferorthopäde prüft die zuständige Krankenkasse den Einzelfall; nach aktueller ÖGK-Information können 80 % des gültigen Kassentarifs erstattet werden. Details finden Sie auf unserer Seite Gratis Zahnspange.",
+        },
         { question: "Kann ich als Erwachsener noch eine Zahnspange bekommen?", answer: "Ja. Immer mehr Erwachsene entscheiden sich für eine Korrektur – mit unsichtbarer Zahnspange, lingualer Technik oder fester Spange. Mehr unter Zahnspange für Erwachsene." },
       ],
       moreTopics: "Weitere Themen:",
@@ -490,12 +516,20 @@ export const dictionaries = {
       services: "Leistungen",
       orthodontics: "Kieferorthopädie",
     },
+    practiceGallery: {
+      intro:
+        "Helle Räume, moderne Behandlungstechnik und ein einladender Wartebereich – so möchten wir Ihnen den Besuch in unserer Ordination so angenehm wie möglich gestalten. Klicken Sie auf ein Bild für die Großansicht.",
+      note: "Alle Fotos zeigen unsere Ordination in 1200 Wien. Wir freuen uns auf Ihren Besuch.",
+      closeLabel: "Schließen",
+      prevLabel: "Vorheriges Bild",
+      nextLabel: "Nächstes Bild",
+    },
     pageLeads: {
       "/ueber-mich":
         "Dr. Manish Sablania ist Fachzahnarzt für Kieferorthopädie und Zahnarzt in 1200 Wien. Beratung auf Deutsch, Englisch und Hindi.",
       "/ablauf-zahnspange-kieferorthopaedie": "Transparenz von Anfang an: Erfahren Sie, welche Schritte bei einer kieferorthopädischen Behandlung in unserer Praxis auf Sie zukommen.",
       "/gratis-zahnspange":
-        "Informationen zur Gratis Zahnspange in Wien: Voraussetzungen, IOTN 4–5, ÖGK-Bewilligung und mögliche Kostenerstattung beim Wahlkieferorthopäden.",
+        "Gratis Zahnspange in Wien: Welche Voraussetzungen gelten, welche Rolle der IOTN spielt – und wie die Beratung bei Zahnspange Sablania in Wien abläuft.",
       "/unsichtbare-zahnspange-wien": "Durchsichtige, herausnehmbare Aligner ermöglichen eine nahezu unsichtbare Zahnkorrektur – ideal für Beruf und Alltag. In unserer Praxis in Wien bieten wir Ihnen diese moderne Option.",
       "/unsichtbare-zahnspange-lingual-innenliegende-zahnspange": "Die linguale (innenliegende) Zahnspange ist von außen unsichtbar und eignet sich für alle, die eine feste Korrektur ohne sichtbare Brackets wünschen.",
       "/zahnspange-fuer-kinder": "Eine frühzeitige kieferorthopädische Behandlung kann das Wachstum nutzen und spätere Behandlungen vereinfachen. Wir beraten Sie gerne, wann der richtige Zeitpunkt für Ihr Kind ist.",
@@ -504,13 +538,15 @@ export const dictionaries = {
       "/myofunktionelle-therapie": "Die myofunktionelle Therapie unterstützt die Kieferorthopädie bei Habits wie Daumenlutschen oder Zungenfehlfunktionen – für ein stabiles Ergebnis.",
       "/kfo-retainer": "Nach der aktiven Behandlung sichern Retainer das Ergebnis dauerhaft. Wir informieren Sie über festsitzende und herausnehmbare Varianten.",
       "/durchsichtige-zahnspange": "Durchsichtige Aligner ermöglichen eine diskrete Zahnkorrektur. Wir beraten Sie zu Behandlungsdauer und Möglichkeiten.",
-      "/mundhygiene-wien": "Professionelle Mundhygiene und Prophylaxe in Wien – für gesunde Zähne und Zahnfleisch und ein strahlendes Lächeln.",
+      "/mundhygiene-wien":
+        "Mundhygiene Wien bei Zahnspange Sablania: professionelle Zahnreinigung und individuelle Zahnpflege – besonders sinnvoll auch bei einer Zahnspange.",
       "/zahnbleaching": "Aufhellung der Zähne für ein ästhetisches Lächeln. Wir beraten Sie zu schonenden Methoden und realistischen Ergebnissen.",
       "/komposit-zahnfuellung": "Ästhetische Zahnfüllungen aus Komposit – zahnfarben und langlebig. Wir setzen auf moderne Materialien und präzise Verarbeitung.",
       "/krone-bruecke": "Krone und Brücke für lückenlosen und stabilen Zahnersatz. Wir beraten Sie zu Materialien und Ablauf.",
       "/zahnersatz": "Moderner Zahnersatz für Ästhetik und Funktion. Von der Krone über die Brücke bis zur Prothese – wir finden die passende Lösung.",
       "/sportschutz-mouthguards": "Individueller Sportschutz zum Schutz der Zähne beim Sport. Angepasst für maximalen Komfort und Schutz.",
-      "/asethetic-dental-services": "Ästhetische Zahnärztliche Leistungen – ein Überblick über unser Angebot von der unsichtbaren Zahnspange bis zu Bleaching, Füllungen und Mundhygiene.",
+      "/asethetic-dental-services":
+        "Ästhetische zahnärztliche Leistungen in Wien bei Zahnspange Sablania: Aligner, Bleaching, Füllungen und Mundhygiene. Beratung nach individuellem Befund.",
       "/implantat-wien": "Zahnimplantate in Wien: Festsitzender Zahnersatz als stabile und ästhetische Alternative zu Prothesen – von der Planung bis zur Nachsorge.",
       "/zahnarzt-1200-wien":
         "Ihre Zahnarztpraxis in Wien 1200 für allgemeine, ästhetische Zahnheilkunde und Kieferorthopädie – zentral gelegen und mit moderner Technik ausgestattet.",
@@ -665,12 +701,30 @@ export const dictionaries = {
       "/zahnarzt-1200-wien": "Dentist 1200 Vienna",
       "/artikel": "Articles",
     } as Record<string, string>,
+    navMenuLabels: {
+      "/ablauf-zahnspange-kieferorthopaedie": "Braces & orthodontics process",
+      "/zahnarzt-1200-wien": "Dentist 1200 Vienna",
+      "/gratis-zahnspange": "Publicly funded braces",
+      "/unsichtbare-zahnspange-wien": "Invisible braces Vienna",
+      "/unsichtbare-zahnspange-lingual-innenliegende-zahnspange": "Lingual braces",
+      "/zahnspange-fuer-kinder": "Braces for children",
+      "/zahnspange-fuer-jugendliche": "Braces for teens",
+      "/zahnspange-fuer-erwachsene": "Braces for adults",
+      "/myofunktionelle-therapie": "Myofunctional therapy",
+      "/kfo-retainer": "Retainers",
+      "/krone-bruecke": "Crown & bridge",
+      "/asethetic-dental-services": "Aesthetic dentistry",
+      "/mundhygiene-wien": "Oral hygiene Vienna",
+      "/zahnbleaching": "Teeth whitening",
+      "/komposit-zahnfuellung": "Composite fillings",
+      "/sportschutz-mouthguards": "Sports mouthguards",
+    } as Record<string, string>,
     homepage: {
       heroTitle: "Your Specialists for Modern Braces in Vienna",
       heroSubline: "Individual Consultation • Modern Technology • Perfect Smile",
       heroCta: "Book Appointment Now",
       heroContact: "Contact Us",
-      heroBadge: "All Health Insurance Companies & Private · Mon–Fri: 10:00 – 17:00",
+      heroBadge: "All health funds & private · Mon–Fri: 10:00–17:00",
       heroHeadlineMain: "Specialist Orthodontist &",
       heroHeadlineAccent: "General Dentist",
       heroDescription:
@@ -806,7 +860,7 @@ export const dictionaries = {
       bracesCategoriesCardInvisalign: "Invisible braces Invisalign – clear aligners for discreet tooth correction.",
       bracesCategoriesCardLingual: "Invisible lingual braces – fixed braces on the inside of the teeth for maximum aesthetics.",
       digitalPracticeTitle: "Digital Practice",
-      digitalPracticeStat1Number: "7,800+",
+      digitalPracticeStat1Number: "8,000+",
       digitalPracticeStat1Text: "Orthodontic treatments and braces cases",
       digitalPracticeStat2Number: "28+ years of experience",
       digitalPracticeStat2Text: "",
@@ -930,7 +984,11 @@ export const dictionaries = {
         { question: "When can my child start orthodontic treatment?", answer: "A first visit is often useful from around 8–10 years, when the permanent front teeth come through. This allows us to see early whether treatment is needed. More under Braces for Children." },
         { question: "Do fixed braces hurt?", answer: "After fitting and after check-ups there may be brief pressure or mild discomfort. This usually subsides within a few days. Modern wires and bracket designs are gentler than in the past." },
         { question: "How long does treatment take?", answer: "Duration depends on the type of misalignment and the method chosen – often between one and two years. After the active phase, the retainer phase follows for stabilisation." },
-        { question: "Does insurance cover the costs?", answer: "Under certain conditions (including age and IOTN grades 4 or 5), funding may be possible. As an elective orthodontist, the insurer reviews each case; according to current ÖGK information, 80% of the applicable contractual tariff may be reimbursed. See our publicly funded braces page for details." },
+        {
+          question: "Does insurance cover the costs?",
+          answer:
+            "Under certain conditions (including age and IOTN grades 4 or 5), funding may be possible. Our practice treats patients insured with ÖGK, SVS, BVAEB and KFA (Vienna). As an elective orthodontist, your fund reviews each case; according to current ÖGK information, 80% of the applicable contractual tariff may be reimbursed. See our publicly funded braces page for details.",
+        },
         { question: "Can I get braces as an adult?", answer: "Yes. More and more adults choose correction – with invisible braces, lingual technique or fixed braces. More under Braces for Adults." },
       ],
       moreTopics: "More topics:",
@@ -1009,6 +1067,14 @@ export const dictionaries = {
       moreInfo: "More info:",
       services: "Services",
       orthodontics: "Orthodontics",
+    },
+    practiceGallery: {
+      intro:
+        "Bright rooms, modern treatment technology and an inviting waiting area – we want your visit to be as comfortable as possible. Click any photo to view it larger.",
+      note: "All photos show our practice in 1200 Vienna. We look forward to your visit.",
+      closeLabel: "Close",
+      prevLabel: "Previous image",
+      nextLabel: "Next image",
     },
     pageLeads: {
       "/ueber-mich":
